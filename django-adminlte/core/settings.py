@@ -44,7 +44,7 @@ if RENDER_EXTERNAL_HOSTNAME:
 # Application definition
 
 INSTALLED_APPS = [
-    #'admin_adminlte.apps.AdminAdminlteConfig',
+    'admin_adminlte.apps.AdminAdminlteConfig',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
