@@ -1,7 +1,7 @@
 from django.urls import path
-from . import views
-from personas.views import Personaindex
+from personas.views import Personasindex
 
 urlpatterns = [
-    path("", Personaindex.as_view(), name="Personaindex"),
+    path('', Personasindex.as_view(), name='personasindex'),
+    
 ]

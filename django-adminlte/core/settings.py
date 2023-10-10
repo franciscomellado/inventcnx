@@ -69,13 +69,12 @@ MIDDLEWARE = [
 ROOT_URLCONF = "core.urls"
 
 #HOME_TEMPLATES = os.path.join(BASE_DIR, 'home', 'templates')
-#HOME_TEMPLATES = os.path.join(BASE_DIR, 'templates')
+HOME_TEMPLATES = os.path.join(BASE_DIR, 'templates')
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        #"DIRS": [HOME_TEMPLATES],
-        "DIRS": [BASE_DIR / 'templates'],
+        "DIRS": [HOME_TEMPLATES],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -166,5 +165,8 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "login"
+LOGOUT_URL = "logout"
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

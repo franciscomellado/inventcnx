@@ -51,7 +51,7 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
-            <a href="{% url 'Personaindex' %}" class="nav-link {% if 'index' in segment %} active {% endif %}">
+            <a href="{% url 'personasindex' %}" class="nav-link {% if 'personasindex' in segment %} active {% endif %}">
               <i class="far fa-circle nav-icon"></i>
               <p>Personas</p>
             </a>
@@ -71,7 +71,7 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
-            <a href="{% url 'personasindex' %}" class="nav-link {% if 'dashboardv1' in segment %} active {% endif %}">
+            <a href="{% url 'personasindex' %}" class="nav-link {% if 'personas' in segment %} active {% endif %}">
               <i class="far fa-circle nav-icon"></i>
               <p>Personas</p>
             </a>
@@ -93,6 +93,15 @@
     {% endif %}
 
     {% if request.user.is_authenticated and not request.user.is_superuser %}
+    <li class="nav-item">
+      <a href="{% url 'personasindex' %}" class="nav-link {% if request.path == '/personas/' %}active{% endif %}">
+        <i class="nav-icon fas fa-th"></i>
+        <p>
+          Personas
+          <span class="right badge badge-danger">New</span>
+        </p>
+      </a>
+    </li>
     <li class="nav-item">
       <a href="{% url 'widgets' %}" class="nav-link {% if 'widgets' in segment %}active{% endif %}">
         <i class="nav-icon fas fa-th"></i>
@@ -700,31 +709,25 @@
 
     {% if request.user.is_authenticated %}
     <li class="nav-item">
-      <a href="#" class="nav-link">
+      <a href="{% url 'logout' %}" class="nav-link">
         <i class="fa fa-sign-out-alt nav-icon"></i>
         <p>Logout</p>
       </a>
     </li>
     {% else %}
     <li class="nav-item">
-      <a href="#" class="nav-link">
+      <a href="{% url 'login' %}" class="nav-link">
         <i class="fa fa-sign-in-alt nav-icon"></i>
         <p>Login</p>
       </a>
     </li>
     <li class="nav-item">
-      <a href="#" class="nav-link">
+      <a href="{% url 'register' %}" class="nav-link">
         <i class="fa fa-user-plus nav-icon"></i>
         <p>Register</p>
       </a>
     </li>        
     {% endif %} 
-    
-    <li class="nav-item">
-      <a target="_blank" href="https://appseed.us/support/" class="nav-link">
-        <i class="fa fa-rocket text-danger nav-icon"></i>
-        <p>Support</p>
-      </a>
-    </li>         
+      
     
   </ul>
