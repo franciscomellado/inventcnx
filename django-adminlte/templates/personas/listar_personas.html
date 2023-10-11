@@ -1,0 +1,24 @@
+<div class="card-body">
+    <table id="example2" class="table table-bordered table-hover">
+      <thead>
+      <tr>
+        <th>Correo</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Area</th>
+        <th>Departamento</th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for person in listar_persona %}
+      <tr>
+        <td>{{ person.nombre }}</td>
+        <td>{{ person.apellido }}</td>
+        <td>{{ person.email }}</td>
+        <td>{{ person.area }}</td>
+        <td>{{ person.departamento }}</td>
+      </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+  </div>

@@ -5,6 +5,9 @@ from .models import Usuario
 class Personaindex(TemplateView):
     template_name = 'personas/data.html'
     
-
-# def index(request):
-#     return render(request, "personas/data.html")
+def tablapersona(request):
+    listar_persona = Usuario.objects.all()
+    data = {
+        'listar_persona': listar_persona,
+    }
+    return render(request, 'listar_persona.html', data)
