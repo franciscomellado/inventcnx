@@ -57,8 +57,8 @@
     {% endif %}
 
     {% if not request.user.is_superuser %}
-      <li class="nav-item {% if 'dashboard' in parent %} menu-open {% endif %}">
-        <a href="#" class="nav-link {% if 'dashboard' in parent %} active {% endif %}">
+      <li class="nav-item {% if ' ' in request.path %} menu-open {% endif %}">
+        <a href="/" class="nav-link {% if ' ' in request.path %} active {% endif %}">
           <i class="nav-icon fas fa-tachometer-alt"></i>
           <p>
             Dashboard
@@ -67,7 +67,7 @@
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
-            <a href="#" class="nav-link {% if 'dashboardv2' in segment %} active {% endif %}">
+            <a href="/" class="nav-link {% if ' ' in request.path %} active {% endif %}">
               <i class="far fa-circle nav-icon"></i>
               <p>Dashboard</p>
             </a>
@@ -79,8 +79,8 @@
 
     {% if request.user.is_authenticated and not request.user.is_superuser %}
     
-    <li class="nav-item {% if request.path == '/personas/' %} menu-open {% endif %}">
-      <a href="#" class="nav-link {% if request.path == '/personas/' %} active {% endif %}">
+    <li class="nav-item {% if '/personas/' in request.path %} menu-open {% endif %}">
+      <a href="#" class="nav-link {% if '/personas/' in request.path %} active {% endif %}">
         <i class="nav-icon fas fa-users"></i>
         <p>
           Personas
@@ -91,17 +91,21 @@
         <li class="nav-item">
           <a href="{% url 'personas:index' %}" class="nav-link {% if request.path == '/personas/' %} active {% endif %}">
             <i class="far fa-circle nav-icon"></i>
-            <p>Listado</p>
+            <p>Listado Personas</p>
           </a>
         </li>
         <li class="nav-item">
-          <a href="{% url 'examples_profile' %}" class="nav-link {% if 'profile' in segment %} active {% endif %}">
+          <a href="{% url 'personas:area' %}" class="nav-link {% if request.path == '/personas/area/' %} active {% endif %}">
             <i class="far fa-circle nav-icon"></i>
-            <p>Profile</p>
+            <p>Listado Áreas</p>
           </a>
         </li>
-        
-       
+        <li class="nav-item">
+          <a href="{% url 'personas:departamento'  %}" class="nav-link {% if request.path == '/personas/departamento/' %} active {% endif %}">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Listado Departamentos</p>
+          </a>
+        </li>
       </ul>
     </li>
 
