@@ -12,7 +12,7 @@ class Departamento(models.Model):
     def __str__(self):
         return self.nombre    
 
-class Usuario(models.Model):
+class Cliente(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     email = models.EmailField()
@@ -23,7 +23,7 @@ class Usuario(models.Model):
         return self.nombre
     
 class Prestamo(models.Model):
-    nombre =models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    nombre =models.ForeignKey(Cliente, on_delete=models.CASCADE)
     fecha_prestamo = models.DateTimeField()
     fecha_devolucion = models.DateTimeField()
     
