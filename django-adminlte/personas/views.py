@@ -1,5 +1,6 @@
 from audioop import reverse
 from django.shortcuts import render
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -13,23 +14,26 @@ class PersonasListView(LoginRequiredMixin,ListView):
     queryset= Personas.objects.all()
     template_name = 'personas/personas_list.html'
     
-class PersonasCreateView(CreateView):
+class PersonasCreateView(SuccessMessageMixin, CreateView):
     model: Personas
     form_class = Personas_form
     template_name = 'personas/personas_form.html'
     success_url = reverse_lazy("personas:index")
+    success_message = "  %(nombre)s ha sido creado con exito"
     
-class PersonasDeleteView(DeleteView):
+class PersonasDeleteView(SuccessMessageMixin,DeleteView):
     model = Personas
-    def get_success_url(self):
-        messages.success(self.request, "Eliminado exitosamente")
-        return reverse_lazy("personas:index")
+    success_url = reverse_lazy("personas:index")
+    success_message = "%(nombre)s ha sido eliminado exitosamente"
     
-class PersonasUpdateView(UpdateView):
+    
+    
+class PersonasUpdateView(SuccessMessageMixin,UpdateView):
     model = Personas
     form_class = Personas_form
     template_name = "personas/personas_update_form.html"
-    success_url = reverse_lazy("personas:index")
+    success_message = " Actualización realizada con exito de %(nombre)s "
+    
     
 # Areas  
 class AreaListView(LoginRequiredMixin,ListView):

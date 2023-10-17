@@ -46,6 +46,13 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+                {% if messages %}
+                  {% for message in messages %}
+                      <div class="text-center alert alert-{{ message.tags }}">
+                          {{ message|safe }}
+                      </div>
+                  {% endfor %}
+              {% endif %}
                 <table id="personaTabla" class="table table-bordered table-striped">
                   <thead>
                   <tr>
