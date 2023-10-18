@@ -1,7 +1,7 @@
 from typing import Any
 from django.shortcuts import render
 from django.views.generic import ListView
-from personas.models import Cliente
+from .models import Persona
 
 # class Personaindex(TemplateView):
 #     template_name = 'personas/data.html'
@@ -14,8 +14,8 @@ from personas.models import Cliente
 #     return render(request, 'listar_persona.html', data)
 
 class PersonaListWiews(ListView):
-    models: Cliente
-    queryset = Cliente.objects.all()
+    models: Persona
+    queryset = Persona.objects.all()
     template_name = 'personas/personas_list.html'
     
     def get_context_data(self, **kwargs):
