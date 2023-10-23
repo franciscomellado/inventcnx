@@ -1,5 +1,5 @@
 from django.db import models
-#from personas.models import Cliente
+from personas.models import Persona
 
 class Estado(models.Model):
     estado = models.CharField(max_length=100)
@@ -37,7 +37,7 @@ class Factura(models.Model):
 class Dispositivo(models.Model):
     marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
     modelo = models.CharField(max_length=100)
-    num_serie = models.CharField(max_length=100)
+    num_serie = models.CharField(max_length=100, unique=True)
     tipo = models.ForeignKey(TipoDispositivo, on_delete=models.CASCADE)
     imei = models.CharField(max_length=100, blank=True, null=True)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
@@ -70,7 +70,7 @@ class Software(models.Model):
         ('4','Cuatro años'),
     )
     nombre = models.CharField(max_length=100)
-    marca = models.CharField(max_length=100)
+    marca = models.ForeignKey(Marca,max_length=100)
     version = models.CharField(max_length=100)
     cantidad_licencias = models.IntegerField(default=0)
     duracion = models.CharField(choices=tiempo_vida, default="0", max_length=5) # duracion en años
@@ -84,6 +84,8 @@ class Software(models.Model):
     
     # realizar una funcion. para calcular el tiempo de vida del producto.
     
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 class Inventario(models.Model):
     tipo_hs = (
         ('H', 'Hardware'),
@@ -100,10 +102,18 @@ class Inventario(models.Model):
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True)
     #software = models.ForeignKey(Software, on_delete=models.CASCADE, null=True)
     #hadrware = models.ForeignKey(Dispositivo, on_delete=models.CASCADE, null=True)
-    
+    persona_asignada = models.ForeignKey(Persona, on_delete=models.CASCADE, null=True, blank=True)
         
 # como vamos hacer la asignación de equipos y software para las personas. Vmaos a usar esta misma tabla
 # o realizamos una nueva aplicacion.
+ # Para la asignación de equipos y software a las personas, En la misma tabla Inventario y agregar un nuevo campo que indique a qué persona está asignado el producto. De esta manera, podrías relacionar los productos de inventario con las personas correspondientes.
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    contenido = GenericForeignKey('content_type', 'object_id')
+
+
+
     
     
     
