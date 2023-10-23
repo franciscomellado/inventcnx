@@ -65,18 +65,30 @@
         <a href="#" class="nav-link {% if 'dashboard' in parent %} active {% endif %}">
           <i class="nav-icon fas fa-tachometer-alt"></i>
           <p>
-            Dashboard
+            Dashboards
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
         <ul class="nav nav-treeview">
           <li class="nav-item">
             <a href="{% url 'personas:index' %}" class="nav-link {% if 'dashboardv1' in segment %} active {% endif %}">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Personas</p>
+              {% comment %} <i class="far fa-circle nav-icon"></i> {% endcomment %}
+              <i class="fas fa-angle-double-right"></i>
+              <p>Usuarios</p>
             </a>
           </li>
         </ul>
+
+        <ul class="nav nav-treeview">
+          <li class="nav-item">
+            <a href="{% url 'personas:index' %}" class="nav-link {% if 'dashboardv1' in segment %} active {% endif %}">
+              {% comment %} <i class="far fa-circle nav-icon"></i> {% endcomment %}
+              <i class="fas fa-angle-double-right"></i>
+              <p>Dispositivos</p>
+            </a>
+          </li>
+        </ul>
+
       </li>
     {% endif %}
 

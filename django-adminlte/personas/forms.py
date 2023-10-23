@@ -2,18 +2,18 @@ from mimetypes import init
 from turtle import textinput
 from django import forms
 from django.forms import ModelForm
-from .models import Area, Persona, Departamento
+from .models import Persona, Departamento
 from django import forms
 
 class Personas_form(ModelForm):
     class Meta:
-        models = Persona
+        model = Persona
         fields = "__all__"
         labels = {
             'nombre': 'Nombre', 
             'apellido': 'Apellido',
             'email': 'Correo',
-            'area': 'Area',
+            'gerencia': 'Gerencia',
         }
         
         Widget = {
@@ -24,10 +24,27 @@ class Personas_form(ModelForm):
                     'required':'true'
                 }
             ),
+            
             'apellido': forms.TextInput(
                 attrs={
                     'class': 'form-control',
+                    'placeholder': 'Apellido',
+                    'required':'true'
+                }
+            ),
+            
+            'email': forms.EmailInput(
+                attrs={
+                    'class': 'form-control',
                     'placeholder': 'Correo',
+                    'required':'true'
+                }
+            ),
+            
+            'gerencia': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'Gerencia',
                     'required':'true'
                 }
             )
@@ -35,16 +52,16 @@ class Personas_form(ModelForm):
         
 class Departamento_form(ModelForm):
     class Meta:
-        models = Departamento
-        fields = ['nombre']
+        model = Departamento
+        fields = ['gerencia']
         labels = {
-            'nombre':'Nombre',
+            'gerencia':'Gerencia',
         }
     Widget = {
-        'nombre': forms.TimeInput(
+        'gerencia': forms.TimeInput(
             attrs={
                 'class':'form-control',
-                'placeholder': 'Nombre',
+                'placeholder': 'gerencia',
                 'required':'true'
             }
         )

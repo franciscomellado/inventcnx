@@ -8,7 +8,7 @@ class Estado(models.Model):
         return self.estado
     
 
-class Proveedor(models.Model):
+class Proveedor(models.Model): # Distribuidor 
     nombre = models.CharField(max_length=100)
     codigo = models.CharField(max_length=100)
     contacto = models.CharField(max_length=100)
@@ -28,7 +28,12 @@ class TipoDispositivo(models.Model):
     
     def __str__(self):
         return self.nombre
+
+class Factura(models.Model):
+    factura = models.CharField(max_length=100)
     
+    def __str__(self):
+        return self.factura
 class Dispositivo(models.Model):
     marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
     modelo = models.CharField(max_length=100)
@@ -36,6 +41,10 @@ class Dispositivo(models.Model):
     tipo = models.ForeignKey(TipoDispositivo, on_delete=models.CASCADE)
     imei = models.CharField(max_length=100, blank=True, null=True)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
+    factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
+    fecha_registro = models.DateField(auto_now=True)
+    fecha_compra = models.DateField(null=True, blank=True)
+    fecha_caducidad = models.DateField(null=True, blank=True)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     #numero_orden = models.ForeignKey(Proveedor, on_delete=models.CASCADE) # numero de la orden de compra.
     observacion = models.TextField()
@@ -58,18 +67,17 @@ class Software(models.Model):
         ('1', 'Un Año'),
         ('2', 'Dos años'),
         ('3','Tres años'),
+        ('4','Cuatro años'),
     )
-    
     nombre = models.CharField(max_length=100)
+    marca = models.CharField(max_length=100)
     version = models.CharField(max_length=100)
     cantidad_licencias = models.IntegerField(default=0)
-    duracion = models.CharField(choices=tiempo_vida, default="1", max_length=5) # duracion en años
+    duracion = models.CharField(choices=tiempo_vida, default="0", max_length=5) # duracion en años
+    factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
     fecha_registro = models.DateField(auto_now=True)
     fecha_compra = models.DateField(null=True, blank=True)
     fecha_caducidad = models.DateField(null=True, blank=True)
-    #tipo_moneda = models.CharField(max_length=30, choices=moneda, blank=True, default='CL',
-    #                               help_text="Tipo de moneda")
-    #valor = models.FloatField()
     
     def __str__(self):
         return f"{self.nombre} {self.cantidad_licencias} {self.fecha_compra}"
@@ -78,7 +86,7 @@ class Software(models.Model):
     
 class Inventario(models.Model):
     tipo_hs = (
-        ('H', 'Harware'),
+        ('H', 'Hardware'),
         ('S', 'Software'),
     )
     nombre = models.CharField(max_length=100)
@@ -90,11 +98,12 @@ class Inventario(models.Model):
     #archivo = models.ImageField(upload_to="datos/", height_field=None, width_field=None, max_length=None, null=True)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True)
-    software = models.ForeignKey(Software, on_delete=models.CASCADE, null=True)
-    hadrware = models.ForeignKey(Dispositivo, on_delete=models.CASCADE, null=True)
+    #software = models.ForeignKey(Software, on_delete=models.CASCADE, null=True)
+    #hadrware = models.ForeignKey(Dispositivo, on_delete=models.CASCADE, null=True)
     
         
-
+# como vamos hacer la asignación de equipos y software para las personas. Vmaos a usar esta misma tabla
+# o realizamos una nueva aplicacion.
     
     
     

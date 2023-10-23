@@ -16,11 +16,6 @@ class PersonasListWiews(ListView):
         context = super().get_context_data(**kwargs)
         print(context)
         return context
-    
-class PersonasDeleteWiews(ListView):
-    models: Persona
-    success_url =  reverse_lazy("persona:index")
-    success_message = "%(nombre) ha sido eliminado exitosamente."
 
 class PersonasCreateViews(CreateView):
     models: Persona
@@ -28,11 +23,21 @@ class PersonasCreateViews(CreateView):
     template_name = 'personas/personas_form.html'
     success_url = reverse_lazy("personas:index")
     success_message = "%(nombre)s ha sido creado con exito."
-    
-class PersonasUpdateViews(UpdateView):
+
+class PersonasUpdateViews(UpdateView): # editar
     models: Persona
     form_class = Personas_form
+    success_url =  reverse_lazy("personas:editar")
     template_name = 'personas/personas_update_form.html'
     success_url = "Actualización realizada con exito de %(nombre)s."
+
+class PersonasDeleteWiews(ListView,DeleteView):
+    models: Persona
+    success_url =  reverse_lazy("personas:index")
+    success_message = "%(nombre) ha sido eliminado exitosamente."
+
+
+    
+
     
     
