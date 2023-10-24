@@ -70,7 +70,7 @@ class Software(models.Model):
         ('4','Cuatro años'),
     )
     nombre = models.CharField(max_length=100)
-    marca = models.ForeignKey(Marca,max_length=100)
+    marca = models.ForeignKey(Marca,max_length=100, on_delete=models.CASCADE)
     version = models.CharField(max_length=100)
     cantidad_licencias = models.IntegerField(default=0)
     duracion = models.CharField(choices=tiempo_vida, default="0", max_length=5) # duracion en años
@@ -108,8 +108,8 @@ class Inventario(models.Model):
 # o realizamos una nueva aplicacion.
  # Para la asignación de equipos y software a las personas, En la misma tabla Inventario y agregar un nuevo campo que indique a qué persona está asignado el producto. De esta manera, podrías relacionar los productos de inventario con las personas correspondientes.
 
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, default=1 )
+    object_id = models.PositiveIntegerField(default=1)
     contenido = GenericForeignKey('content_type', 'object_id')
 
 
