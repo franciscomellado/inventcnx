@@ -16,7 +16,7 @@ class Persona(models.Model):
     def __str__(self):
         return f"{self.nombre} {self.apellido}"
     
-    def get_absolute_url(self):
-        return reverse("editar", kwargs={"id": self.id})
+    # def get_absolute_url(self):
+    #     return reverse("personas:editar", kwargs={"id": self.id})
     
     
