@@ -1,0 +1,74 @@
+Por ejemplo, para obtener todos los inventarios de tipo hardware, puedes hacer lo siguiente:
+
+from django.contrib.contenttypes.models import ContentType
+
+# Obtener el ContentType de la clase Hardware
+hardware_type = ContentType.objects.get_for_model(Hardware)
+
+# Obtener todos los inventarios relacionados con la clase Hardware
+inventarios_hardware = Inventario.objects.filter(content_type=hardware_type)
+De manera similar, para obtener todos los inventarios de tipo software, puedes hacer lo siguiente:
+
+from django.contrib.contenttypes.models import ContentType
+
+# Obtener el ContentType de la clase Software
+software_type = ContentType.objects.get_for_model(Software)
+
+# Obtener todos los inventarios relacionados con la clase Software
+inventarios_software = Inventario.objects.filter(content_type=software_type)
+
+
+
+class InventarioListView(ListView):
+    model = Inventario
+    template_name = 'inventario_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        dispositivos = Dispositivo.objects.filter(inventarios_dispositivo__in=context['object_list'])
+        software = Software.objects.filter(inventarios_software__in=context['object_list'])
+        context['dispositivos'] = dispositivos
+        context['software'] = software
+        return context
+
+
+ para crear un nuevo objeto Software utilizando los datos del formulario y las relaciones genéricas, puedes hacer lo siguiente:
+
+from django.contrib.contenttypes.models import ContentType
+
+class InventarioForm(forms.ModelForm):
+    tipo_producto = forms.ChoiceField(choices=[('dispositivo', 'Dispositivo'), ('software', 'Software')])
+
+    class Meta:
+        model = Inventario
+        fields = ['tipo_producto', 'dispositivo', 'software', 'disponible', ...]
+
+    def save(self, commit=True):
+        tipo_producto = self.cleaned_data.get('tipo_producto')
+        if tipo_producto == 'dispositivo':
+            dispositivo = Dispositivo.objects.create(...)
+            inventario = Inventario(dispositivo=dispositivo, ...)
+        elif tipo_producto == 'software':
+            software = Software.objects.create(
+                estado=self.cleaned_data.get('estado'),
+                proveedor=self.cleaned_data.get('proveedor'),
+                licencia=self.cleaned_data.get('licencia'),
+                fecha_caducidad=self.cleaned_data.get('fecha_caducidad')
+                # campos específicos de software
+            )
+            inventario = Inventario(
+                contenido_type=ContentType.objects.get_for_model(software),
+                contenido_id=software.id,
+                disponible=self.cleaned_data.get('disponible'),
+                # campos comunes a todos los productos
+            )
+        else:
+            inventario = super().save(commit=False)
+        if commit:
+            inventario.save()
+        return inventario
+En este ejemplo, se crea un nuevo objeto Software utilizando los datos del formulario, y se guarda en la base de datos. Luego, se crea un nuevo objeto Inventario con la relación genérica del software y los demás campos del formulario
+
+
+Bookmark.objects.aggregate(Count("tags"))
+

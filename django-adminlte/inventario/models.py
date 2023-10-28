@@ -1,6 +1,9 @@
 from django.db import models
 from personas.models import Persona
-
+from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.urls import reverse
 class Estado(models.Model):
     estado = models.CharField(max_length=100)
 
@@ -34,6 +37,8 @@ class Factura(models.Model):
     
     def __str__(self):
         return self.factura
+    
+
 class Dispositivo(models.Model):
     marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
     modelo = models.CharField(max_length=100)
@@ -41,27 +46,22 @@ class Dispositivo(models.Model):
     tipo = models.ForeignKey(TipoDispositivo, on_delete=models.CASCADE)
     imei = models.CharField(max_length=100, blank=True, null=True)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
-    factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
+    
     fecha_registro = models.DateField(auto_now=True)
     fecha_compra = models.DateField(null=True, blank=True)
     fecha_caducidad = models.DateField(null=True, blank=True)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     #numero_orden = models.ForeignKey(Proveedor, on_delete=models.CASCADE) # numero de la orden de compra.
     observacion = models.TextField()
-    
+    inventario = GenericRelation(
+        "Inventario", "object_id", "content_type", related_query_name="dispositivo"
+    )
     
     def __str__(self):
         return f"{self.marca} {self.modelo} {self.num_serie} {self.tipo} {self.proveedor}"
-    
+
+
 class Software(models.Model):
-    #moneda = (
-    #    ('UF', 'unidad de fomento'),
-    #    ('CL', 'Peso Chileno'),
-    #    ('US', 'Dolar Americano'),
-    #    ('AUD', 'Dolar Autraliano'),
-    #    ('EU' , 'Euros'),
-    #)
-    
     tiempo_vida = (
         ('0', 'Permantente'),
         ('1', 'Un Año'),
@@ -74,18 +74,19 @@ class Software(models.Model):
     version = models.CharField(max_length=100)
     cantidad_licencias = models.IntegerField(default=0)
     duracion = models.CharField(choices=tiempo_vida, default="0", max_length=5) # duracion en años
-    factura = models.ForeignKey(Factura, on_delete=models.CASCADE)
+    
     fecha_registro = models.DateField(auto_now=True)
     fecha_compra = models.DateField(null=True, blank=True)
     fecha_caducidad = models.DateField(null=True, blank=True)
-    
+    inventario = GenericRelation(
+        "Inventario", "object_id", "content_type", related_query_name="software", 
+    )
     def __str__(self):
         return f"{self.nombre} {self.cantidad_licencias} {self.fecha_compra}"
     
     # realizar una funcion. para calcular el tiempo de vida del producto.
     
-from django.contrib.contenttypes.fields import GenericForeignKey
-from django.contrib.contenttypes.models import ContentType
+
 class Inventario(models.Model):
     tipo_hs = (
         ('H', 'Hardware'),
@@ -100,17 +101,25 @@ class Inventario(models.Model):
     #archivo = models.ImageField(upload_to="datos/", height_field=None, width_field=None, max_length=None, null=True)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True)
-    #software = models.ForeignKey(Software, on_delete=models.CASCADE, null=True)
-    #hadrware = models.ForeignKey(Dispositivo, on_delete=models.CASCADE, null=True)
+    factura = models.ForeignKey(Factura, on_delete=models.CASCADE, null=True)
     persona_asignada = models.ForeignKey(Persona, on_delete=models.CASCADE, null=True, blank=True)
-        
 # como vamos hacer la asignación de equipos y software para las personas. Vmaos a usar esta misma tabla
 # o realizamos una nueva aplicacion.
  # Para la asignación de equipos y software a las personas, En la misma tabla Inventario y agregar un nuevo campo que indique a qué persona está asignado el producto. De esta manera, podrías relacionar los productos de inventario con las personas correspondientes.
-
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, default=1 )
+    limit = models.Q(app_label='inventario', model='dispositivo') | models.Q(app_label='inventario', model='software')
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, default=1, limit_choices_to=limit )
     object_id = models.PositiveIntegerField(default=1)
-    contenido = GenericForeignKey('content_type', 'object_id')
+    content_object = GenericForeignKey("content_type", "object_id")
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["content_type", "object_id"]),
+        ]
+    def __str__(self):
+        return f"{self.nombre} {self.valor} {self.tipo} {self.estado}"
+    
+    def get_absolute_url(self):
+        return reverse("inventario: index", kwargs={"id": self.id})
 
 
 

@@ -1,9 +1,6 @@
-from mimetypes import init
-from turtle import textinput
 from django import forms
 from django.forms import ModelForm
 from .models import Persona, Departamento
-from django import forms
 
 class Personas_form(ModelForm):
     class Meta:

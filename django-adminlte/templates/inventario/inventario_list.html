@@ -21,7 +21,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-              <li class="breadcrumb-item active">Personas</li>
+              <li class="breadcrumb-item active">Inventario</li>
             </ol>
           </div>
         </div>
@@ -36,9 +36,9 @@
             
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Listado de Personas</h3>
+                <h3 class="card-title">Listado de Inventario</h3>
                 <span class= "float-right">
-                <a  class="btn btn-app bg-primary btn-sm" title="add-person" href="{% url 'personas:crear' %}">
+                <a  class="btn btn-app bg-primary btn-sm" title="add-inven" href="{% url 'inventario:crear' %}">
                   <i class="fa fa-user-plus"></i>
                   Agregar
                 </a>
@@ -46,29 +46,44 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="personaTabla" class="table table-bordered table-striped">
+                <table id="inventarioTabla" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Correo</th>
-                    <th>gerencia</th>
+                    <th>Valor</th>
+                    <th>Número_orden</th>
+                    <th>Disponible</th>
+                    <th >Estado</th>
+                    <th >Proveedor</th>
+                    <th >Factura</th>
+                    <th >Persona Asignada</th>
+                    <th >Gerencia</th>
                     <th >Acción</th>
+
+
                   </tr>
                   </thead>
+                  
                   <tbody>
-                    {% for persona in object_list %}
+                    {% for inventario in object_list %}
                     <tr>
-                      <td>{{ persona.nombre}}</td>
-                      <td>{{ persona.apellido}}</td>
-                      <td>{{ persona.email}}</td>
-                      <td>{{ persona.gerencia}}</td>
+                      
+                      <td>{{ inventario.nombre}}</td>
+                      <td>{{ inventario.valor}}</td>
+                      <td>{{ inventario.numero_orden}}</td>
+                      <td>{{ inventario.disponible}}</td>
+                      <td>{{ inventario.estado}}</td>
+                      <td>{{ inventario.proveedor}}</td>
+                      <td>{{ inventario.factura}}</td>
+                      <td>{{ inventario.persona_asignada}}</td>
+
+                      <td>{{ inventario.persona_asignada.gerencia}}</td>
                       <td class="text-sm-right">
-                        <a class="btn btn-info btn-sm" href="{% url 'personas:editar' persona.pk %}">
+                        <a class="btn btn-info btn-sm" href="{% url 'inventario:editar' inventario.pk %}">
                             <i class="fas fa-pencil-alt">
                             </i>
                         </a>
-                        <a class="btn btn-danger btn-sm" href="{% url 'personas:eliminar' persona.pk %}">
+                        <a class="btn btn-danger btn-sm" href="{% url 'inventario:eliminar' inventario.pk %}">
                             <i class="fas fa-trash">
                             </i>
                             </a>

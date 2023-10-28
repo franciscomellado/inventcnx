@@ -1,30 +1,34 @@
 from django.contrib import admin
-from inventario.models import Estado, Proveedor, Marca, TipoDispositivo, Dispositivo, Software, Inventario
+from django.contrib.contenttypes.admin import GenericStackedInline
+from inventario.models import Estado, Factura, Proveedor, Marca, TipoDispositivo, Dispositivo, Software, Inventario
+
+class InventarioInline(GenericStackedInline):
+    model = Inventario
+    extra = 1
 
 class ProveedorAdmin(admin.ModelAdmin):
-    list_display = ["nombre", "codigo", "contacto"]
- 
-admin.site.register(Proveedor, ProveedorAdmin)
-   
+    list_display = ("nombre", "codigo", "contacto")
+    
+
 class SoftwareAdmin(admin.ModelAdmin):
-    list_display = ["nombre", "cantidad_licencias", "fecha_compra"]
+    list_display = ("nombre", "cantidad_licencias", "fecha_compra")
+    inlines = [InventarioInline]
+  
 
-admin.site.register(Software, SoftwareAdmin) 
 
-class EstadoAdmin(admin.ModelAdmin):
-    list_display = ["estado"]
+class DispositivoAdmin(admin.ModelAdmin):
+    
+    inlines = [InventarioInline]
+ 
+    
+    
 
-admin.site.register(Estado, EstadoAdmin)
+    
+admin.site.register(Estado)
 admin.site.register(Marca)
-
-class TipoDispositoAdmin(admin.ModelAdmin):
-    list_display = ["nombre"]
-    
-admin.site.register(TipoDispositivo, TipoDispositoAdmin)
-admin.site.register(Dispositivo)
-
+admin.site.register(TipoDispositivo)
 admin.site.register(Inventario)
-
-
-    
-    
+admin.site.register(Factura)
+admin.site.register(Proveedor, ProveedorAdmin)
+admin.site.register(Software, SoftwareAdmin)     
+admin.site.register(Dispositivo, DispositivoAdmin)
