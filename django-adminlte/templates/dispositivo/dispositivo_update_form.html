@@ -1,0 +1,92 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block title %} General Form Elements {% endblock title %}
+
+{% block extrastyle %}
+
+<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.css' %}">
+{% endblock extrastyle %}
+  
+{% block bodyclass %} hold-transition sidebar-mini {% endblock bodyclass %}
+
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Actualizar Dispositivo</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+              <li class="breadcrumb-item active">Actualizar dispositivo</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- left column -->
+          <div class="col-md-12">
+            <!-- Horizontal Form -->
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">Actualizar Dispositivo</h3>
+              </div>
+              <!-- /.card-header -->
+              
+              <!-- form start -->
+              <form class="form-horizontal" action="" method="post" >
+                {% csrf_token %}
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h2>Inventario</h2>
+                      <div class="form-group">
+                      {{ formset.management_form }}
+                      {% for form in formset %}
+                        {{ form.as_p }}
+                      {% endfor %}
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <h2>Dispositivo</h2>
+                      <div class="form-group">
+                      {{ form.as_p}}
+                      </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-info">Actualizar</button>
+                  <button onclick="javascript:history.back();" class="btn btn-default float-right">Cancelar</button>
+                </div>
+                <!-- /.card-footer -->
+              </form>
+            </div>
+            <!-- /.card -->
+          </div>
+          <!--/.col (left) -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+  {% endblock content %}
+
+  {% block extra_scripts %}
+  <script src="{% static 'plugins/select2/js/select2.js' %}"></script>
+    <!-- Page specific script -->
+    <script>
+      $('.select2').select2()
+    </script>
+  {% endblock extra_scripts %}

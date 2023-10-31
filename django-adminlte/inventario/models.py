@@ -4,6 +4,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
+from datetime import date, timedelta
 class Estado(models.Model):
     estado = models.CharField(max_length=100)
 
@@ -46,7 +47,6 @@ class Dispositivo(models.Model):
     tipo = models.ForeignKey(TipoDispositivo, on_delete=models.CASCADE)
     imei = models.CharField(max_length=100, blank=True, null=True)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
-    
     fecha_registro = models.DateField(auto_now=True)
     fecha_compra = models.DateField(null=True, blank=True)
     fecha_caducidad = models.DateField(null=True, blank=True)
@@ -74,13 +74,16 @@ class Software(models.Model):
     version = models.CharField(max_length=100)
     cantidad_licencias = models.IntegerField(default=0)
     duracion = models.CharField(choices=tiempo_vida, default="0", max_length=5) # duracion en años
-    
     fecha_registro = models.DateField(auto_now=True)
     fecha_compra = models.DateField(null=True, blank=True)
     fecha_caducidad = models.DateField(null=True, blank=True)
     inventario = GenericRelation(
         "Inventario", "object_id", "content_type", related_query_name="software", 
     )
+    
+    def fecha_caducidad(self):
+        return date.today().year - self.nacdate.year
+    
     def __str__(self):
         return f"{self.nombre} {self.cantidad_licencias} {self.fecha_compra}"
     
@@ -107,8 +110,8 @@ class Inventario(models.Model):
 # o realizamos una nueva aplicacion.
  # Para la asignación de equipos y software a las personas, En la misma tabla Inventario y agregar un nuevo campo que indique a qué persona está asignado el producto. De esta manera, podrías relacionar los productos de inventario con las personas correspondientes.
     limit = models.Q(app_label='inventario', model='dispositivo') | models.Q(app_label='inventario', model='software')
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, default=1, limit_choices_to=limit )
-    object_id = models.PositiveIntegerField(default=1)
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=limit )
+    object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")
 
     class Meta:

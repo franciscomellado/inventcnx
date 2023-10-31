@@ -1,4 +1,4 @@
-Por ejemplo, para obtener todos los inventarios de tipo hardware, puedes hacer lo siguiente:
+Por ejemplo, para obtener todos los inventarios de tipo hardware:
 
 from django.contrib.contenttypes.models import ContentType
 
@@ -7,7 +7,7 @@ hardware_type = ContentType.objects.get_for_model(Hardware)
 
 # Obtener todos los inventarios relacionados con la clase Hardware
 inventarios_hardware = Inventario.objects.filter(content_type=hardware_type)
-De manera similar, para obtener todos los inventarios de tipo software, puedes hacer lo siguiente:
+De manera similar, para obtener todos los inventarios de tipo software:
 
 from django.contrib.contenttypes.models import ContentType
 
@@ -72,3 +72,24 @@ En este ejemplo, se crea un nuevo objeto Software utilizando los datos del formu
 
 Bookmark.objects.aggregate(Count("tags"))
 
+def __init__(self, attrs=None, *args, **kwargs):
+42	
+43	        self.attrs = attrs or {}
+44	
+45	        widgets = (
+46	            Select(
+47	                attrs={
+48	                    'class': 'select2 form-control input-sm', 'data-toggle': 'tooltip',
+49	                    'title': _("Seleccione el tipo de documento (cédula o pasaporte)")
+50	                }, choices=TIPO_DOCUMENTO_IDENTIFICACION
+51	            ),
+52	            TextInput(
+53	                attrs={
+54	                    'class': 'form-control text-center input-sm', 'placeholder': '00000000', 'data-mask': '00000000',
+55	                    'data-toggle': 'tooltip', 'maxlength': '8', 'data-rule-required': 'true', 'size': '7',
+56	                    'title': _("Indique el número de R.I.F., si es menor a 8 dígitos complete con ceros a la izquierda")
+57	                }
+58	            )
+59	        )
+60	
+61	        super(TipoDocumentoWidget, self).__init__(widgets, attrs, *args, **kwargs)

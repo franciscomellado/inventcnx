@@ -2,16 +2,24 @@ from django.urls import path
 from inventario.views import *
 
 app_name = 'inventario'
-
 urlpatterns = [
     path("", InventarioListViews.as_view(), name="index"),
     path("crear", InventarioCreateView.as_view(), name="crear"),
     path("editar/<int:pk>", InventarioUpdateView.as_view(), name="editar"),
-    path("eliminar/<int:pk>", InventarioDeleteView.as_view(), name="eliminar"),
+    path("eliminar/<int:pk>", InventarioDeleteView.as_view(), name="eliminar"), 
     #path("detalle/<int:id>", InventarioDetailView.as_view(), name="detalle"),
+
+    ## Dispositivos
+    path("dispositivo/", DispositivoListViews.as_view(), name="index_disp"),
+    path("dispositivo/crear", DispositivoCreateView.as_view(), name="crear_disp"),
+    path("dispositivo/editar/<int:pk>", DispositivoUpdateView.as_view(), name="editar_disp"),
+    path("dispositivo/eliminar/<int:pk>", DispositivoDeleteView.as_view(), name="eliminar_disp"),
+    #path("dispositivo/detalle/<int:id>", DispositivoDetailView.as_view(), name="detalle_disp"),
     
-    # path('eliminar/<int:id>', PersonasDeleteWiews.as_view, name="eliminar"),
-    # path('crear', PersonasCreateViews.as_view(), name="crear"),
-    # path('editar/<int:id>', PersonasUpdateViews.as_view(), name="editar"),
-    
+    ## Software
+    path("software/", SoftwareListViews.as_view(), name="index_soft"),
+    path("software/crear", SoftwareCreateView.as_view(), name="crear_soft"),
+    path("software/editar/<int:pk>", SoftwareUpdateView.as_view(), name="editar_soft"),
+    path("software/eliminar/<int:pk>", SoftwareDeleteView.as_view(), name="eliminar_soft"),
+    #path("software/detalle/<int:id>", SoftwareDetailView.as_view(), name="detalle_soft"),
 ]
