@@ -1,20 +1,24 @@
 from django.db import models
-from django.urls import reverse
 
-class Departamento(models.Model): # nombre de  la genencia.
-    gerencia = models.CharField(max_length=100)
+class Area(models.Model):
+    nombre = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.gerencia    
+class Departamento(models.Model):
+    nombre = models.CharField(max_length=100)
+    
 
-class Persona(models.Model):
+class Usuario(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     email = models.EmailField()
-    gerencia = models.ForeignKey(Departamento, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.nombre} {self.apellido}"
+    area = models.ForeignKey(Area, on_delete=models.CASCADE)
+    departamento = models.ForeignKey(Departamento, on_delete=models.CASCADE)
+    
+class Prestamo(models.Model):
+    nombre =models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    fecha_prestamo = models.DateTimeField()
+    fecha_devolucion = models.DateTimeField()
+    
     
     # def get_absolute_url(self):
     #     return reverse("personas:editar", kwargs={"id": self.id})
