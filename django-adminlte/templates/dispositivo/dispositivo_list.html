@@ -70,6 +70,7 @@
                     <th >Tipo</th>
                     <th >IMEI</th>
                     <th >Estado</th>
+                    <th>Disponible</th>
                     <th >Fecha_registro</th>
                     <th >Fecha compra</th>
                     <th >Fecha caducidad</th>
@@ -80,17 +81,15 @@
                   </tr>
                   </thead>   
                   <tbody>
-                    
                     {% for dispositivo in object_list %}
-                        
                     <tr>
-                      
                       <td>{{ dispositivo.marca}}{{dispositivo.inventario.disponible}}</td>
                       <td>{{ dispositivo.modelo}}</td>
                       <td>{{ dispositivo.num_serie}}</td>
                       <td>{{ dispositivo.tipo}}</td>
                       <td>{{ dispositivo.imei |default_if_none:"-"}}</td>
                       <td>{{ dispositivo.estado}}</td>
+                      <td>{% if dispositivo.disponible_inventario %}{{ 'Si' }}{% else %}{{ 'No'}}{% endif %}</td>
                       <td>{{ dispositivo.fecha_registro |date:"SHORT_DATE_FORMAT"}}</td>
                       <td>{{ dispositivo.fecha_compra |date:"SHORT_DATE_FORMAT"}}</td>
                       <td>{{ dispositivo.fecha_caducidad |date:"SHORT_DATE_FORMAT"}}</td>

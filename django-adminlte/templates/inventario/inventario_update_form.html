@@ -48,8 +48,8 @@
               <form class="form-horizontal" action="" method="post" >
                 {% csrf_token %}
                 <div class="card-body">
-                  {{ form.as_p }}
-                  {{ formset }}
+                  {{ form.as_div }}
+                 
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">

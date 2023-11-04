@@ -5,7 +5,7 @@ from .forms import *
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import F,Q
+from django.db.models import F,Case,When
 
 class InventarioListViews(ListView):
     models: Inventario
@@ -22,7 +22,7 @@ class InventarioUpdateView(SuccessMessageMixin,UpdateView):
     form_class = Inventario_form
     success_url = reverse_lazy("inventario:index")
     template_name = "inventario/inventario_update_form.html"
-    success_message = "%(nombre)s ha sido actualizado con exito."
+    success_message = " ha sido actualizado con exito."
 
 class InventarioDeleteView(SuccessMessageMixin,DeleteView):
     model= Inventario
@@ -43,7 +43,7 @@ class DispositivoListViews(ListView):
             nombre_inventario=F('inventario__nombre'),
             valor_inventario=F('inventario__valor'),
             tipo_inventario=F('inventario__tipo'),
-            
+            disponible_inventario =F('inventario__disponible'),
             estado_inventario =F('inventario__estado__estado'),
             proveedor_inventario =F('inventario__proveedor__nombre'),
             factura_inventario = F('inventario__factura__factura'),
@@ -89,6 +89,7 @@ class DispositivoUpdateView(SuccessMessageMixin,UpdateView):
     success_url = reverse_lazy("inventario:index_disp")
     template_name = "dispositivo/dispositivo_update_form.html"
     success_message = "Ha sido actualizado con exito."
+    
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         form_class = self.get_form_class()
@@ -134,7 +135,7 @@ class SoftwareListViews(ListView):
             nombre_inventario=F('inventario__nombre'),
             valor_inventario=F('inventario__valor'),
             tipo_inventario=F('inventario__tipo'),
-           
+            disponible_inventario =F('inventario__disponible'),
             estado_inventario =F('inventario__estado__estado'),
             proveedor_inventario =F('inventario__proveedor__nombre'),
             numero_orden_inventario =F('inventario__numero_orden'),
@@ -177,7 +178,6 @@ class SoftwareCreateView(SuccessMessageMixin,CreateView):
 class SoftwareUpdateView(SuccessMessageMixin,UpdateView):
     model = Software
     form_class = Software_form
-    formset = SoftwareInlineFormSet
     success_url = reverse_lazy("inventario:index_soft")
     template_name = "software/software_update_form.html"
     success_message = "Ha sido actualizado con exito."
@@ -187,6 +187,7 @@ class SoftwareUpdateView(SuccessMessageMixin,UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         formset = SoftwareInlineFormSetUpdate(instance = self.object)
+        print(form)
         return self.render_to_response(self.get_context_data(form = form, formset = formset))
 
     def post(self, request, *args, **kwargs):

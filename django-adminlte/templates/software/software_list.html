@@ -66,7 +66,7 @@
                     <th>Versión</th>
                     <th >Cant de Lic</th>
                     <th >Duración</th>
-                   
+                   <th>disponible</th>
                     <th >Fecha Registro</th>
                     <th >Fecha Compra</th>
                     {% comment %} <th >Fecha caducidad</th> {% endcomment %}
@@ -88,7 +88,7 @@
                       <td>{{ software.version}}</td>
                       <td>{{ software.cantidad_licencias}}</td>
                       <td>{{ software.duracion}}</td>
-                     
+                      <td>{% if software.disponible_inventario %}{{ 'Si' }}{% else %}{{ 'No'}}{% endif %}</td>
                       <td>{{ software.fecha_registro |date:"SHORT_DATE_FORMAT"}}</td>
                       <td>{{ software.fecha_compra |date:"SHORT_DATE_FORMAT"}}</td>
                       {% comment %} <td>{{ software.fecha_caducidad |date:"SHORT_DATE_FORMAT"}}</td> {% endcomment %}

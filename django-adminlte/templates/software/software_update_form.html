@@ -6,6 +6,8 @@
 {% block extrastyle %}
 
 <link rel="stylesheet" href="{% static 'plugins/select2/css/select2.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+
 {% endblock extrastyle %}
   
 {% block bodyclass %} hold-transition sidebar-mini {% endblock bodyclass %}
@@ -84,10 +86,16 @@
 
   {% endblock content %}
 
-  {% block extra_scripts %}
+{% block extra_scripts %}
+  <!-- Page specific script -->
   <script src="{% static 'plugins/select2/js/select2.js' %}"></script>
-    <!-- Page specific script -->
-    <script>
-      $('.select2').select2()
-    </script>
-  {% endblock extra_scripts %}
+  <script src="{% static 'plugins/moment/moment-with-locales.min.js' %}"></script>
+  <script src="{% static 'plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+  <script>
+    $('.select2').select2({
+      })
+    $('.datepicker').datetimepicker({
+      format: 'DD/MM/YYYY'
+    }); 
+  </script>
+{% endblock extra_scripts %}
