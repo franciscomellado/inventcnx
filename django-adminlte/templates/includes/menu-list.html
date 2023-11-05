@@ -52,14 +52,7 @@
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
-        <ul class="nav nav-treeview">
-          <li class="nav-item">
-            <a href="{% url 'Personaindex' %}" class="nav-link {% if 'index' in segment %} active {% endif %}">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Personas</p>
-            </a>
-          </li>
-        </ul>
+        
       </li>
     {% endif %}
 
@@ -72,32 +65,9 @@
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
-        <ul class="nav nav-treeview">
-          <li class="nav-item">
-            <a href="{% url 'personasindex' %}" class="nav-link {% if 'dashboardv1' in segment %} active {% endif %}">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Personas</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link {% if 'dashboardv2' in segment %} active {% endif %}">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Dashboard v2</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link {% if 'dashboardv3' in segment %} active {% endif %}">
-              <i class="far fa-circle nav-icon"></i>
-              <p>Dashboard v3</p>
-            </a>
-          </li>
-        </ul>
-
       </li>
     {% endif %}
-
     {% if request.user.is_authenticated and not request.user.is_superuser %}
-    
     <li class="nav-item {% if '/personas/' in request.path %} menu-open {% endif %}">
       <a href="#" class="nav-link {% if '/personas/' in request.path %} active {% endif %}">
         <i class="nav-icon fas fa-users"></i>
@@ -113,12 +83,7 @@
             <p>Listado Personas</p>
           </a>
         </li>
-        <li class="nav-item">
-          <a href="{% url 'personas:area' %}" class="nav-link {% if request.path == '/personas/area/' %} active {% endif %}">
-            <i class="far fa-circle nav-icon"></i>
-            <p>Listado Áreas</p>
-          </a>
-        </li>
+        
         <li class="nav-item">
           <a href="{% url 'personas:departamento'  %}" class="nav-link {% if request.path == '/personas/departamento/' %} active {% endif %}">
             <i class="far fa-circle nav-icon"></i>
@@ -127,7 +92,30 @@
         </li>
       </ul>
     </li>
-
+    <li class="nav-item {% if '/inventario/' in request.path %} menu-open {% endif %}">
+      <a href="#" class="nav-link {% if '/inventario/' in request.path %} active {% endif %}">
+        <i class="nav-icon fas fa-calculator" ></i>
+        <p>
+          Inventario
+          <i class="fas fa-angle-left right"></i>
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+        <li class="nav-item">
+          <a href="{% url 'inventario:index_disp' %}" class="nav-link {% if request.path == '/inventario/dispositivo/' %} active {% endif %}">
+            <i class="fas fa-laptop nav-icon"></i>
+            <p>Listado Dispositivos</p>
+          </a>
+        </li>
+        
+        <li class="nav-item">
+          <a href="{% url 'inventario:index_soft'  %}" class="nav-link {% if request.path == '/inventario/software/' %} active {% endif %}">
+            <i class="fas fa-audio-description nav-icon"></i>
+            <p>Listado Software</p>
+          </a>
+        </li>
+      </ul>
+    </li>
     {% endif %}
 
     {% if request.user.is_authenticated %}

@@ -11,7 +11,6 @@ class Estado(models.Model):
     def __str__(self):
         return self.estado
     
-
 class Proveedor(models.Model): # Distribuidor 
     nombre = models.CharField(max_length=100)
     codigo = models.CharField(max_length=100)

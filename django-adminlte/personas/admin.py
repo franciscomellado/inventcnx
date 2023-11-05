@@ -1,22 +1,20 @@
 from django.contrib import admin
-from .models import Departamento, Personas
-
+from .models import Departamento, Persona
 
 admin.site.site_header = "Inventario Admin"
 
 class PersonasAdmin(admin.ModelAdmin):
-    model = Personas
-    list_display = ("nombre", "apellido", "email", "area", "departamento",)
-    list_filter = ["area"]
+    model = Persona
+    list_display = ("nombre", "apellido", "email",)
     search_fields = ["apellido"]
 
 
 class DepartamentoAdmin(admin.ModelAdmin):
     model = Departamento
-    list_display = ("nombre",)
-    list_filter = ["nombre"]
-    search_fields = ["nombre"]
+    list_display = ("gerencia",)
+    list_filter = ["gerencia"]
+    search_fields = ["gerencia"]
 
 
-admin.site.register(Personas, PersonasAdmin)
+admin.site.register(Persona, PersonasAdmin)
 admin.site.register(Departamento, DepartamentoAdmin)
