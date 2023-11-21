@@ -85,7 +85,7 @@
         </li>
         
         <li class="nav-item">
-          <a href="{% url 'personas:departamento'  %}" class="nav-link {% if request.path == '/personas/departamento/' %} active {% endif %}">
+          <a href="{% url 'personas:dpto'  %}" class="nav-link {% if request.path == '/personas/dpto/' %} active {% endif %}">
             <i class="far fa-circle nav-icon"></i>
             <p>Listado Departamentos</p>
           </a>
@@ -107,11 +107,16 @@
             <p>Listado Dispositivos</p>
           </a>
         </li>
-        
         <li class="nav-item">
           <a href="{% url 'inventario:index_soft'  %}" class="nav-link {% if request.path == '/inventario/software/' %} active {% endif %}">
             <i class="fas fa-audio-description nav-icon"></i>
             <p>Listado Software</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'inventario:index_prove'  %}" class="nav-link {% if request.path == '/inventario/proveedor/' %} active {% endif %}">
+            <i class="fas fa-shopping-bag nav-icon"></i>
+            <p>Listado Proveedores</p>
           </a>
         </li>
       </ul>

@@ -38,7 +38,7 @@
               <div class="card-header">
                 <h3 class="card-title">Listado de Departamentos</h3>
                 <span class= "float-right">
-                <a  class="btn btn-app bg-primary btn-sm" title="add-person" href="{% url 'personas:departamentocrear' %}">
+                <a  class="btn btn-app bg-primary btn-sm" title="add-person" href="{% url 'personas:crear_dpto' %}">
                   <i class="fa fa-user-plus"></i>
                   Agregar
                 </a>
@@ -55,16 +55,16 @@
                   </tr>
                   </thead>
                   <tbody>
-                    {% for area in object_list %}
+                    {% for dpto in object_list %}
                     <tr>
-                      <td>{{ area.nombre}}</td>
+                      <td>{{ dpto.gerencia}}</td>
                       
                       <td class="text-sm-right">
-                        <a class="btn btn-info btn-sm" href="{% url 'personas:departamentoeditar' area.pk %}">
+                        <a class="btn btn-info btn-sm" href="{% url 'personas:editar_dpto' dpto.pk %}">
                             <i class="fas fa-pencil-alt">
                             </i>
                         </a>
-                        <a class="btn btn-danger btn-sm" href="{% url 'personas:departamentoeliminar' area.pk %}">
+                        <a class="btn btn-danger btn-sm" href="{% url 'personas:eliminar_dpto' dpto.pk %}">
                             <i class="fas fa-trash">
                             </i>
                             </a>

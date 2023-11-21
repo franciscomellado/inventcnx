@@ -8,19 +8,17 @@ urlpatterns = [
     path("crear", PersonasCreateView.as_view(), name="crear"),
     path("editar/<int:pk>", PersonasUpdateView.as_view(), name="editar"),
     
-    
-    path("departamento/", DepartamentoListView.as_view(), name="departamento"),
+    ## Departamentos
+    path("dpto/", DepartamentoListView.as_view(), name="dpto"),
     path(
-        "departamento/eliminar/<int:pk>",
+        "dpto/eliminar/<int:pk>",
         DepartamentoDeleteView.as_view(),
-        name="departamentoeliminar",
+        name="eliminar_dpto",
     ),
+    path("dpto/crear", DepartamentoCreateView.as_view(), name="crear_dpto"),
     path(
-        "departamento/crear", DepartamentoCreateView.as_view(), name="departamentocrear"
-    ),
-    path(
-        "departamento/editar/<int:pk>",
+        "dpto/editar/<int:pk>",
         DepartamentoUpdateView.as_view(),
-        name="departamentoeditar",
+        name="editar_dpto",
     ),
 ]

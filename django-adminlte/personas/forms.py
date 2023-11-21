@@ -1,3 +1,5 @@
+from mimetypes import init
+from turtle import textinput
 from django import forms
 from django.forms import ModelForm
 from .models import Persona, Departamento
@@ -64,4 +66,11 @@ class Departamento_form(ModelForm):
             }
         )
     }
+    
+    
+    
+    
+    
+    
+    
     

@@ -22,4 +22,12 @@ urlpatterns = [
     path("software/editar/<int:pk>", SoftwareUpdateView.as_view(), name="editar_soft"),
     path("software/eliminar/<int:pk>", SoftwareDeleteView.as_view(), name="eliminar_soft"),
     #path("software/detalle/<int:id>", SoftwareDetailView.as_view(), name="detalle_soft"),
+    
+    ##Proveedor
+    ## Software
+    path("proveedor/", ProveedorListViews.as_view(), name="index_prove"),
+    path("proveedor/crear", ProveedorCreateView.as_view(), name="crear_prove"),
+    path("proveedor/editar/<int:pk>", ProveedorUpdateView.as_view(), name="editar_prove"),
+    path("proveedor/eliminar/<int:pk>", ProveedorDeleteView.as_view(), name="eliminar_prove"),
+    #path("proveedor/detalle/<int:id>", ProveedorDetailView.as_view(), name="detalle_prove"),
 ]

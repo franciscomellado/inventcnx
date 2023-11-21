@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-{% block title %} Listado Personas {% endblock title %}
+{% block title %} Proveedor {% endblock title %}
 {% block extrastyle %}
 <!-- DataTables -->
 <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
@@ -16,12 +16,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Personas</h1>
+            <h1>Proveedor</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-              <li class="breadcrumb-item active">Áreas</li>
+              <li class="breadcrumb-item active">Proveedor</li>
             </ol>
           </div>
         </div>
@@ -36,35 +36,49 @@
             
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Listado de Áreas</h3>
+                <h3 class="card-title">Listado de Proveedor</h3>
                 <span class= "float-right">
-                <a  class="btn btn-app bg-primary btn-sm" title="add-person" href="{% url 'personas:areacrear' %}">
+                <a  class="btn btn-app bg-primary btn-sm" title="add-inven" href="{% url 'inventario:crear_prove' %}">
                   <i class="fa fa-user-plus"></i>
                   Agregar
                 </a>
                 </span>
+                <span class="float-left m-3">
+                  {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                 </span>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="personaTabla" class="table table-bordered table-striped">
+                <table id="softwareTabla" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Nombre</th>
-                    
+                    <th>Codigo</th>
+                    <th>Contacto</th>
                     <th >Acción</th>
                   </tr>
-                  </thead>
+                  </thead>   
                   <tbody>
-                    {% for area in object_list %}
+                    {% for proveedor in object_list %}
                     <tr>
-                      <td>{{ area.nombre}}</td>
-                      
+                      <td>{{ proveedor.nombre}}</td>
+                      <td>{{ proveedor.codigo}}</td>
+                      <td>{{ proveedor.contacto}}</td>
                       <td class="text-sm-right">
-                        <a class="btn btn-info btn-sm" href="{% url 'personas:areaeditar' area.pk %}">
+                        <a class="btn btn-info btn-sm" href="{% url 'inventario:editar_prove' proveedor.pk %}">
                             <i class="fas fa-pencil-alt">
                             </i>
                         </a>
-                        <a class="btn btn-danger btn-sm" href="{% url 'personas:areaeliminar' area.pk %}">
+                        <a class="btn btn-danger btn-sm" href="{% url 'inventario:eliminar_prove' proveedor.pk %}">
                             <i class="fas fa-trash">
                             </i>
                             </a>
@@ -105,10 +119,10 @@
 <!-- Page specific script -->
 <script>
   $(function () {
-    $("#personaTabla").DataTable({
+    $("#softwareTabla").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#personaTabla_wrapper .col-md-6:eq(0)');
+      {% comment %} "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"] {% endcomment %}
+    }).buttons().container().appendTo('#dispositivoTabla_wrapper .col-md-6:eq(0)');
     $('#example2').DataTable({
       "paging": true,
       "lengthChange": false,

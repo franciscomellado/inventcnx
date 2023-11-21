@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.views.generic import ListView
-from .models import Inventario, Dispositivo, Software
+from .models import Inventario, Dispositivo, Software, Proveedor
 from .forms import *
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -29,7 +29,6 @@ class InventarioDeleteView(SuccessMessageMixin,DeleteView):
     success_url = reverse_lazy("inventario:index")
     template_name = "inventario/inventario_delete.html"
     success_message = "%(nombre) ha sido eliminado exitosamente."
-    
     
 ####---- Vistas para Dispositivos -----    
 class DispositivoListViews(ListView):
@@ -174,7 +173,6 @@ class SoftwareCreateView(SuccessMessageMixin,CreateView):
         else:
             return self.render_to_response(self.get_context_data(form=form))
     
-    
 class SoftwareUpdateView(SuccessMessageMixin,UpdateView):
     model = Software
     form_class = Software_form
@@ -214,3 +212,29 @@ class SoftwareDeleteView(SuccessMessageMixin,DeleteView):
     success_url = reverse_lazy("inventario:index_soft")
     template_name = "software/software_delete.html"
     success_message = "Ha sido eliminado exitosamente."
+    
+####---- Vistas para Proveedor -----  
+class ProveedorListViews(ListView):
+    models: Proveedor
+    queryset = Proveedor.objects.all()
+    template_name = 'proveedor/proveedor_list.html'
+class ProveedorCreateView(SuccessMessageMixin,CreateView):
+    model= Proveedor
+    form_class = Proveedor_form
+    template_name = "proveedor/proveedor_form.html"
+    success_url = reverse_lazy("inventario:index_prove")
+    success_message = "%(nombre)s ha sido creado con exito."
+    
+class ProveedorUpdateView(SuccessMessageMixin,UpdateView):
+    model = Proveedor
+    form_class = Proveedor_form
+    success_url = reverse_lazy("inventario:index_prove")
+    template_name = "proveedor/proveedor_update_form.html"
+    success_message = "%(nombre)s ha sido actualizado con exito."
+
+class ProveedorDeleteView(SuccessMessageMixin,DeleteView):
+    model= Proveedor
+    success_url = reverse_lazy("inventario:index_prove")
+    template_name = "proveedor/proveedor_delete.html"
+    success_message = "%(nombre)s ha sido eliminado exitosamente."
+    

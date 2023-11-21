@@ -45,7 +45,7 @@ class DepartamentoCreateView(CreateView):
     model: Departamento
     form_class = Departamento_form
     template_name = "personas/dpto/departamento_form.html"
-    success_url = reverse_lazy("personas:departamento")
+    success_url = reverse_lazy("personas:dpto")
 
 
 class DepartamentoDeleteView(DeleteView):
@@ -54,11 +54,11 @@ class DepartamentoDeleteView(DeleteView):
 
     def get_success_url(self):
         messages.success(self.request, "Eliminado exitosamente")
-        return reverse_lazy("personas:departamento")
+        return reverse_lazy("personas:dpto")
 
 
 class DepartamentoUpdateView(UpdateView):
     model = Departamento
     form_class = Departamento_form
-    template_name = "personas/area/area_update_form.html"
-    success_url = reverse_lazy("personas:departamento")
+    template_name = "personas/dpto/departamento_update_form.html"
+    success_url = reverse_lazy("personas:dpto")
