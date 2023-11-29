@@ -18,49 +18,49 @@ class Personas_form(ModelForm):
         #     "gerencia": "Gerencia",
         # }
         
-        widgets = {
-            "nombre": forms.TextInput(
-                attrs={
-                    "class": "form-control col-sm-10",
-                    "placeholder": "Nombre",
-                    "required":"true",
+        # widgets = {
+        #     "nombre": forms.TextInput(
+        #         attrs={
+        #             "class": "form-control col-sm-10",
+        #             "placeholder": "Nombre",
+        #             "required":"true",
                     
-                },
+        #         },
                 
-            ),
+        #     ),
            
-            "apellido": forms.TextInput(
-                attrs={
-                    "class": "form-control col-sm-10",
-                    "placeholder": "Apellido",
-                    "required":"true"
-                }
-            ),
+        #     "apellido": forms.TextInput(
+        #         attrs={
+        #             "class": "form-control col-sm-10",
+        #             "placeholder": "Apellido",
+        #             "required":"true"
+        #         }
+        #     ),
             
-            "email": forms.EmailInput(
-                attrs={
-                    "class": "form-control col-sm-10",
-                    "placeholder": "Correo",
-                    "required":"true"
-                }
-            ),
+        #     "email": forms.EmailInput(
+        #         attrs={
+        #             "class": "form-control col-sm-10",
+        #             "placeholder": "Correo",
+        #             "required":"true"
+        #         }
+        #     ),
             
-            "usuario": forms.TextInput(
-                attrs={
-                    "class": "form-control col-sm-10",
-                    "placeholder": "usuario",
-                    "required": False
-                }
-            ),
+        #     "usuario": forms.TextInput(
+        #         attrs={
+        #             "class": "form-control col-sm-10",
+        #             "placeholder": "usuario",
+        #             "required": False
+        #         }
+        #     ),
             
-            "gerencia": forms.Select(
-                attrs={
-                    "class": "form-control col-sm-10",
+        #     "gerencia": forms.Select(
+        #         attrs={
+        #             "class": "form-control col-sm-10",
                     
-                    "required":"true"
-                }
-            )
-        }
+        #             "required":"true"
+        #         }
+        #     )
+        # }
         
         
 class Departamento_form(ModelForm):
