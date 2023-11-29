@@ -9,60 +9,73 @@ class Personas_form(ModelForm):
     class Meta:
         model = Persona
         fields = "__all__"
-        labels = {
-            'nombre': 'Nombre', 
-            'apellido': 'Apellido',
-            'email': 'Correo',
-            'gerencia': 'Gerencia',
-        }
+       
+        # labels = {
+        #     "nombre": "Nombre", 
+        #     "apellido": "Apellido",
+        #     "email": "Correo",
+        #     "usuario": "Usuario",
+        #     "gerencia": "Gerencia",
+        # }
         
-        Widget = {
-            'nombre': forms.TextInput(
+        widgets = {
+            "nombre": forms.TextInput(
                 attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Nombre',
-                    'required':'true'
+                    "class": "form-control col-sm-10",
+                    "placeholder": "Nombre",
+                    "required":"true",
+                    
+                },
+                
+            ),
+           
+            "apellido": forms.TextInput(
+                attrs={
+                    "class": "form-control col-sm-10",
+                    "placeholder": "Apellido",
+                    "required":"true"
                 }
             ),
             
-            'apellido': forms.TextInput(
+            "email": forms.EmailInput(
                 attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Apellido',
-                    'required':'true'
+                    "class": "form-control col-sm-10",
+                    "placeholder": "Correo",
+                    "required":"true"
                 }
             ),
             
-            'email': forms.EmailInput(
+            "usuario": forms.TextInput(
                 attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Correo',
-                    'required':'true'
+                    "class": "form-control col-sm-10",
+                    "placeholder": "usuario",
+                    "required": False
                 }
             ),
             
-            'gerencia': forms.TextInput(
+            "gerencia": forms.Select(
                 attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Gerencia',
-                    'required':'true'
+                    "class": "form-control col-sm-10",
+                    
+                    "required":"true"
                 }
             )
         }
         
+        
 class Departamento_form(ModelForm):
     class Meta:
         model = Departamento
-        fields = ['gerencia']
+        fields = ["gerencia"]
         labels = {
-            'gerencia':'Gerencia',
+            "gerencia":"Gerencia",
         }
     Widget = {
-        'gerencia': forms.TimeInput(
+        "gerencia": forms.TimeInput(
             attrs={
-                'class':'form-control',
-                'placeholder': 'gerencia',
-                'required':'true'
+                "class":"form-control",
+                "placeholder": "gerencia",
+                "required":"true"
             }
         )
     }

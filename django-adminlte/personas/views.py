@@ -26,13 +26,14 @@ class PersonasCreateView(SuccessMessageMixin, CreateView):
 class PersonasDeleteView(SuccessMessageMixin, DeleteView):
     model = Persona
     success_url = reverse_lazy("personas:index")
-    success_message = "%(nombre)s ha sido eliminado exitosamente"
+    success_message = "La persona ha sido eliminado exitosamente"
 
 
 class PersonasUpdateView(SuccessMessageMixin, UpdateView):
     model = Persona
     form_class = Personas_form
     template_name = "personas/personas_update_form.html"
+    success_url = reverse_lazy("personas:index")
     success_message = " Actualización realizada con exito de %(nombre)s "
 
     # Departamento

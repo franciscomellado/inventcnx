@@ -1,13 +1,19 @@
 from django.shortcuts import render, HttpResponseRedirect
 from django.views.generic import ListView
-from .models import Inventario, Dispositivo, Software, Proveedor
+from .models import Inventario, Dispositivo, Software, Proveedor, Factura
 from .forms import *
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import F,Case,When
+from datetime import date, timedelta
+from django.shortcuts import render
+from django.views import View
+from django.conf import settings
+import os
 
-class InventarioListViews(ListView):
+
+class InventarioListViews(SuccessMessageMixin,ListView):
     models: Inventario
     queryset = Inventario.objects.all()
     template_name = 'inventario/inventario_list.html'
@@ -31,7 +37,7 @@ class InventarioDeleteView(SuccessMessageMixin,DeleteView):
     success_message = "%(nombre) ha sido eliminado exitosamente."
     
 ####---- Vistas para Dispositivos -----    
-class DispositivoListViews(ListView):
+class DispositivoListViews(SuccessMessageMixin,ListView):
     models: Dispositivo
     queryset = Dispositivo.objects.all()
     template_name = 'dispositivo/dispositivo_list.html'
@@ -41,16 +47,17 @@ class DispositivoListViews(ListView):
         queryset = queryset.annotate(
             nombre_inventario=F('inventario__nombre'),
             valor_inventario=F('inventario__valor'),
-            tipo_inventario=F('inventario__tipo'),
             disponible_inventario =F('inventario__disponible'),
             estado_inventario =F('inventario__estado__estado'),
+            fecha_registro_inventario =F('inventario__fecha_registro'),
+            fecha_entrega_inventario =F('inventario__fecha_entrega'),
+            fecha_caducidad_inventario=F('inventario__fecha_caducidad'),
             proveedor_inventario =F('inventario__proveedor__nombre'),
             factura_inventario = F('inventario__factura__factura'),
             persona_nombre_inventario=F('inventario__persona_asignada__nombre'),
             persona_apellido_inventario=F('inventario__persona_asignada__apellido'),
             gerencia_inventario_nombre=F('inventario__persona_asignada__gerencia__gerencia'),
         )
-        
         return queryset
     
 class DispositivoCreateView(SuccessMessageMixin,CreateView):
@@ -77,6 +84,7 @@ class DispositivoCreateView(SuccessMessageMixin,CreateView):
             self.object = form.save()
             formset.instance = self.object
             formset.save()
+            self.object.tipo='H'
             return super().form_valid(form)
         else:
             return self.render_to_response(self.get_context_data(form=form))
@@ -121,9 +129,18 @@ class DispositivoDeleteView(SuccessMessageMixin,DeleteView):
     template_name = "dispositivo/dispositivo_delete.html"
     success_message = " Ha sido eliminado exitosamente."
     
+    def delete(self, request, *args, **kwargs):
+        # Obtener la instancia del dispositivo a eliminar
+        dispositivo = self.get_object()
+        # Eliminar el archivo de imagen asociado al dispositivo
+        if dispositivo.imagen_dispostivo:
+            os.remove(os.path.join(settings.MEDIA_ROOT, dispositivo.imagen_dispostivo.name))
+
+        # Eliminar la instancia del dispositivo
+        return super().delete(request, *args, **kwargs)
 
 ####---- Vistas para Software -----    
-class SoftwareListViews(ListView):
+class SoftwareListViews(SuccessMessageMixin,ListView):
     models: Software
     queryset = Software.objects.all()
     template_name = 'software/software_list.html'
@@ -133,11 +150,12 @@ class SoftwareListViews(ListView):
         queryset = queryset.annotate(
             nombre_inventario=F('inventario__nombre'),
             valor_inventario=F('inventario__valor'),
-            tipo_inventario=F('inventario__tipo'),
+            cantidad_licencias = F('inventario__factura__cantidad_licencias'),
+            duracion = F('inventario__duracion'),
             disponible_inventario =F('inventario__disponible'),
             estado_inventario =F('inventario__estado__estado'),
-            proveedor_inventario =F('inventario__proveedor__nombre'),
-            numero_orden_inventario =F('inventario__numero_orden'),
+            fecha_compra = F('inventario__factura__fecha_factura'),
+            fecha_caducidad = F('inventario__fecha_caducidad'),
             factura_inventario = F('inventario__factura__factura'),
             persona_nombre_inventario=F('inventario__persona_asignada__nombre'),
             persona_apellido_inventario=F('inventario__persona_asignada__apellido'),
@@ -169,6 +187,7 @@ class SoftwareCreateView(SuccessMessageMixin,CreateView):
             self.object = form.save()
             formset.instance = self.object
             formset.save()
+            self.object.tipo='S'
             return super().form_valid(form)
         else:
             return self.render_to_response(self.get_context_data(form=form))
@@ -185,7 +204,6 @@ class SoftwareUpdateView(SuccessMessageMixin,UpdateView):
         form_class = self.get_form_class()
         form = self.get_form(form_class)
         formset = SoftwareInlineFormSetUpdate(instance = self.object)
-        print(form)
         return self.render_to_response(self.get_context_data(form = form, formset = formset))
 
     def post(self, request, *args, **kwargs):
@@ -201,6 +219,8 @@ class SoftwareUpdateView(SuccessMessageMixin,UpdateView):
     def form_valid(self, form, formset):
         self.object = form.save()
         formset.instance = self.object
+        if 'fecha_compra' in formset.changed_data:
+            formset.fecha_caducidad = formset.fecha_compra + timedelta(years=int(formset.duracion))
         formset.save()
         return HttpResponseRedirect(self.get_success_url())
 
@@ -215,7 +235,7 @@ class SoftwareDeleteView(SuccessMessageMixin,DeleteView):
     
 ####---- Vistas para Proveedor -----  
 class ProveedorListViews(ListView):
-    models: Proveedor
+    models = Proveedor
     queryset = Proveedor.objects.all()
     template_name = 'proveedor/proveedor_list.html'
 class ProveedorCreateView(SuccessMessageMixin,CreateView):
@@ -238,3 +258,36 @@ class ProveedorDeleteView(SuccessMessageMixin,DeleteView):
     template_name = "proveedor/proveedor_delete.html"
     success_message = "%(nombre)s ha sido eliminado exitosamente."
     
+
+class AvisosVencimientoView(View):
+    def get(self, request):
+        dispositivos = Dispositivo.objects.filter(fecha_caducidad__gte=date.today(), fecha_caducidad__lte=date.today() + timedelta(days=30))
+        software = Software.objects.filter(fecha_caducidad__gte=date.today(), fecha_caducidad__lte=date.today() + timedelta(days=30))
+        return render(request, 'avisos.html', {'dispositivos': dispositivos, 'software': software})
+    
+    
+    ##### Factura ###########
+    
+class FacturaListViews(SuccessMessageMixin,ListView):
+    model= Factura
+    queryset = Factura.objects.all()
+    template_name = 'factura/factura_list.html'
+class FacturaCreateView(SuccessMessageMixin,CreateView):
+    model = Factura
+    form_class = Factura_form
+    template_name = "factura/factura_form.html"
+    success_url = reverse_lazy("inventario:index")
+    success_message = "%(factura)s ha sido creado con exito."
+    
+class FacturaUpdateView(SuccessMessageMixin,UpdateView):
+    model = Factura
+    form_class = Factura_form
+    success_url = reverse_lazy("inventario:index_factu")
+    template_name = "factura/factura_update_form.html"
+    success_message = " ha sido actualizado con exito."
+
+class FacturaDeleteView(SuccessMessageMixin,DeleteView):
+    model= Factura
+    success_url = reverse_lazy("inventario:index")
+    template_name = "factura/factura_delete.html"
+    success_message = "%(factura) ha sido eliminado exitosamente."

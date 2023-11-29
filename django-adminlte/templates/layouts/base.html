@@ -57,7 +57,13 @@
   </div>
   
   {% include 'includes/scripts.html' %}
-  {% block extra_scripts %}{% endblock extra_scripts %}
+  {% block extra_scripts %}
+  <script>  
+    $(document).ready(function () {  
+          jQuery.datetimepicker.setLocale('es');  
+    });  
+  </script>
+  {% endblock extra_scripts %}
 
 
 </body>

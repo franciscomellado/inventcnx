@@ -60,6 +60,10 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # aplicaciones terceros
+    'widget_tweaks',
+    
+    #
     "home",
     "personas",
     "inventario",
@@ -159,16 +163,18 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+DATE_INPUT_FORMATS = (
+    '%d/%m/%Y', 
+)
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
-MEDIA_URL = "/datos/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "datos")
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 #if not DEBUG:
 #    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

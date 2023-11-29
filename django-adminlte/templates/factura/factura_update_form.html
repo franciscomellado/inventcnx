@@ -1,14 +1,17 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 
-{% block title %} Crear Elemento. {% endblock title %}
+{% block title %} Proveedor Actualizar {% endblock title %}
 
-{% block bodyclass %} hold-transition sidebar-mini {% endblock bodyclass %}
 {% block extrastyle %}
+
 <link rel="stylesheet" href="{% static 'plugins/select2/css/select2.css' %}">
 <link rel="stylesheet" href="{% static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
-    
+
 {% endblock extrastyle %}
+  
+{% block bodyclass %} hold-transition sidebar-mini {% endblock bodyclass %}
+
 {% block content %}
 
   <!-- Content Wrapper. Contains page content -->
@@ -18,13 +21,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Ingresar Dispositivo al sistema.</h1>
+            <h1>Actualizar Factura</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              {% comment %} <li class="breadcrumb-item"><a href="{% url 'personas:index' %}">Home</a></li> {% endcomment %}
-              <li class="breadcrumb-item active">Ingresar Dispositivo</li>
-              <li class="breadcrumb-item"><a href="{% url 'inventario:index_disp' %}">Vover</a></li>
+              <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+              <li class="breadcrumb-item active">Actualizar Factura</li>
             </ol>
           </div>
         </div>
@@ -40,36 +42,26 @@
             <!-- Horizontal Form -->
             <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Ingreso Dispositivo</h3>
+                <h3 class="card-title">Actualizar Factura</h3>
               </div>
               <!-- /.card-header -->
-             
+              
               <!-- form start -->
-              <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+              <form class="form-horizontal" action="" method="post" >
                 {% csrf_token %}
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-md-6">
-                      <h2>Inventario</h2>
+                    <div class="col-md-12">
+                      <h2>Factura</h2>
                       <div class="form-group">
-                        {{ formset.management_form }}
-                        {% for form in formset %}
-                            {{ form.as_div }}
-                        {% endfor %}
+                      {{ form.as_div}}
                       </div>
                     </div>
-                    <div class="col-md-6">
-                      <h2>Dispositivo</h2>
-                      <div class="form-group">
-                        {{ form.media }} 
-                        {{ form.as_div}}
-                      </div>
-                    </div>
-                    </div>
-                    </div>
+                </div>
+              </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-info">Aceptar</button>
+                  <button type="submit" class="btn btn-info">Actualizar</button>
                   <button onclick="javascript:history.back();" class="btn btn-default float-right">Cancelar</button>
                 </div>
                 <!-- /.card-footer -->
@@ -85,32 +77,16 @@
 
   {% endblock content %}
 
-  {% block extra_scripts %}
-    <!-- Page specific script -->
+{% block extra_scripts %}
+  <!-- Page specific script -->
   <script src="{% static 'plugins/select2/js/select2.js' %}"></script>
   <script src="{% static 'plugins/moment/moment-with-locales.min.js' %}"></script>
   <script src="{% static 'plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
-  <!-- dropzonejs -->
-  <script src="{% static 'plugins/dropzone/min/dropzone.min.js' %}"></script>
   <script>
     $('.select2').select2({
       })
     $('.datepicker').datetimepicker({
-      format: 'DD/MM/YYYY',  
-      timepicker:false,
-      autoclose: true
-      }); 
-      Dropzone.options.myDropzone = {
-        paramName: "imagen", // el nombre de nuestro input
-        autoProcessQueue : true,
-        parallelUploads: 1,
-
-        init: function() {
-            this.on("success", function(file, responseText) {
-                // evento lanzado al terminar de subir las imágenes en cola
-                console.log(responseText);
-            });
-        }
-    };
+      format: 'DD/MM/YYYY'
+    }); 
   </script>
-  {% endblock extra_scripts %}
+{% endblock extra_scripts %}

@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-{% block title %} Inventario {% endblock title %}
+{% block title %} Proveedor {% endblock title %}
 {% block extrastyle %}
 <!-- DataTables -->
 <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
@@ -16,12 +16,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Dispositivo</h1>
+            <h1>Facturas</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-              <li class="breadcrumb-item active">Dispositivo</li>
+              <li class="breadcrumb-item active">Factura</li>
             </ol>
           </div>
         </div>
@@ -36,11 +36,9 @@
             
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Listado de Dispositivos</h3>
-                <div>
-               
+                <h3 class="card-title">Listado de Facturas</h3>
                 <span class= "float-right">
-                <a  class="btn btn-app bg-primary btn-sm" title="add-inven" href="{% url 'inventario:crear_disp' %}">
+                <a  class="btn btn-app bg-primary btn-sm" title="add-inven" href="{% url 'inventario:crear_factu' %}">
                   <i class="fa fa-user-plus"></i>
                   Agregar
                 </a>
@@ -58,52 +56,38 @@
                 {% endif %}
                  </span>
               </div>
-              </div>
               <!-- /.card-header -->
               <div class="card-body">
-               
-                <table id="dispositivoTabla" class="table table-bordered table-striped">
+                <table id="softwareTabla" class="table table-bordered table-striped">
                   <thead>
                   <tr>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Num serie</th>
-                    {% comment %} <th >Tipo</th> {% endcomment %}
-                    <th >IMEI</th>
-                    <th >Estado</th>
-                    <th>Disponible</th>
-                    <th >Fecha registro</th>
-                    <th >Fecha entrega</th>
-                    <th >Fecha caducidad</th>
-                    <th >Proveedor</th>
                     <th>Factura</th>
-                    <th >Asignada a</th>
-                    <th >Gerencia</th>
+                    <th>Fecha factura</th>
+                    <th>Fecha registro</th>
+                    <th >Proveedor</th>
+                    <th>Orden de compra</th>
+                    <th >Cant. licencias</th>
+                    <th>comentarios</th>
                     <th >Acción</th>
                   </tr>
                   </thead>   
                   <tbody>
-                    {% for dispositivo in object_list %}
+                    {% for factura in object_list %}
                     <tr>
-                      <td>{{ dispositivo.marca}}{{dispositivo.inventario.disponible}}</td>
-                      <td>{{ dispositivo.modelo}}</td>
-                      <td>{{ dispositivo.num_serie}}</td>
-                      <td>{{ dispositivo.imei |default_if_none:"-"}}</td>
-                      <td>{{ dispositivo.estado_inventario | default_if_none:"No definido"}}</td>
-                      <td>{% if dispositivo.disponible_inventario %}{{ 'Si' }}{% else %}{{ 'No'}}{% endif %}</td>
-                      <td>{{ dispositivo.fecha_registro_inventario | date:"SHORT_DATE_FORMAT"}}</td>
-                      <td>{{ dispositivo.fecha_entrega_inventario | date:"SHORT_DATE_FORMAT"}}</td>
-                      <td>{{ dispositivo.fecha_caducidad_inventario |date:"SHORT_DATE_FORMAT" | default:"<small>Perpetua</small>" }}</td>
-                      <td>{{ dispositivo.proveedor_inventario}}</td>
-                      <td>{{ dispositivo.factura_inventario}}</td>
-                      <td>{{ dispositivo.persona_nombre_inventario }} {{ dispositivo.persona_apellido_inventario }}</td>
-                      <td>{{ dispositivo.gerencia_inventario_nombre}}</td>
+                      <td>{{ factura.factura }}</td>
+                      <td>{{ factura.fecha_factura | date:"SHORT_DATE_FORMAT"}}</td>
+                      <td>{{ factura.fecha_registro | date:"SHORT_DATE_FORMAT"}}</td>
+                      <td>{{ factura.proveedor}}</td>
+                      <td>{{ factura.orden_de_compra}}</td>
+                      <td>{{ factura.cantidad_licencias}}</td>
+                      <td>{{ factura.comentarios}}</td>
+                      
                       <td class="text-sm-right">
-                        <a class="btn btn-info btn-sm" href="{% url 'inventario:editar_disp' dispositivo.pk %}">
+                        <a class="btn btn-info btn-sm" href="{% url 'inventario:editar_factu' factura.pk %}">
                             <i class="fas fa-pencil-alt">
                             </i>
                         </a>
-                        <a class="btn btn-danger btn-sm" href="{% url 'inventario:eliminar_disp' dispositivo.pk %}">
+                        <a class="btn btn-danger btn-sm" href="{% url 'inventario:eliminar_factu' factura.pk %}">
                             <i class="fas fa-trash">
                             </i>
                             </a>
@@ -144,7 +128,7 @@
 <!-- Page specific script -->
 <script>
   $(function () {
-    $("#dispositivoTabla").DataTable({
+    $("#softwareTabla").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
       {% comment %} "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"] {% endcomment %}
     }).buttons().container().appendTo('#dispositivoTabla_wrapper .col-md-6:eq(0)');

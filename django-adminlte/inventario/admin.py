@@ -11,7 +11,7 @@ class ProveedorAdmin(admin.ModelAdmin):
     
 
 class SoftwareAdmin(admin.ModelAdmin):
-    list_display = ("nombre", "cantidad_licencias", "fecha_compra")
+    list_display = ( "marca","version",)
     inlines = [InventarioInline]
   
 

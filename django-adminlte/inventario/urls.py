@@ -24,10 +24,19 @@ urlpatterns = [
     #path("software/detalle/<int:id>", SoftwareDetailView.as_view(), name="detalle_soft"),
     
     ##Proveedor
-    ## Software
     path("proveedor/", ProveedorListViews.as_view(), name="index_prove"),
     path("proveedor/crear", ProveedorCreateView.as_view(), name="crear_prove"),
     path("proveedor/editar/<int:pk>", ProveedorUpdateView.as_view(), name="editar_prove"),
     path("proveedor/eliminar/<int:pk>", ProveedorDeleteView.as_view(), name="eliminar_prove"),
     #path("proveedor/detalle/<int:id>", ProveedorDetailView.as_view(), name="detalle_prove"),
+    
+    ##Factura
+    path("factura/", FacturaListViews.as_view(), name="index_factu"),
+    path("factura/crear", FacturaCreateView.as_view(), name="crear_factu"),
+    path("factura/editar/<int:pk>", FacturaUpdateView.as_view(), name="editar_factu"),
+    path("factura/eliminar/<int:pk>", FacturaDeleteView.as_view(), name="eliminar_factu"),
+    #path("factura/detalle/<int:id>", FacturaDetailView.as_view(), name="detalle_factu"),
+    
+    
+    path('avisos/', AvisosVencimientoView.as_view(), name='avisos_vencimiento'),
 ]

@@ -1,12 +1,13 @@
+from pyexpat import model
 from django.db import models
 from personas.models import Persona
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 class Estado(models.Model):
-    estado = models.CharField(max_length=100)
+    estado = models.CharField(max_length=100,  unique=True)
 
     def __str__(self):
         return self.estado
@@ -22,18 +23,25 @@ class Proveedor(models.Model): # Distribuidor
     
     
 class Marca(models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, unique=True)
     
     def __str__(self):
         return self.nombre
 class TipoDispositivo(models.Model):
-    nombre = models.CharField(max_length=100) # Notebook, telefono, table..etc
+    nombre = models.CharField(max_length=100, unique=True) # Notebook, telefono, table..etc
     
     def __str__(self):
         return self.nombre
 
 class Factura(models.Model):
     factura = models.CharField(max_length=100)
+    fecha_factura = models.DateField(null=True, blank=True)
+    uploadedFile = models.FileField(upload_to="facturas/", null=True, blank=True)
+    fecha_registro = models.DateField(auto_now=True)
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True)
+    orden_de_compra = models.CharField(max_length=50,null=True,blank=True)
+    cantidad_licencias = models.IntegerField(default=0)
+    comentarios = models.TextField(null=True, blank=True)
     
     def __str__(self):
         return self.factura
@@ -43,82 +51,85 @@ class Dispositivo(models.Model):
     marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
     modelo = models.CharField(max_length=100)
     num_serie = models.CharField(max_length=100, unique=True)
-    tipo = models.ForeignKey(TipoDispositivo, on_delete=models.CASCADE)
+    tipo_dispositivo = models.ForeignKey(TipoDispositivo, on_delete=models.CASCADE)
     imei = models.CharField(max_length=100, blank=True, null=True)
-    estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
-    fecha_registro = models.DateField(auto_now=True)
-    fecha_compra = models.DateField(null=True, blank=True)
-    fecha_caducidad = models.DateField(null=True, blank=True)
-    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
-    #numero_orden = models.ForeignKey(Proveedor, on_delete=models.CASCADE) # numero de la orden de compra.
-    observacion = models.TextField()
+    imagen_dispositivo = models.ImageField(upload_to="datos/dispositivos/", null=True, verbose_name="Foto Dispositivo")
     inventario = GenericRelation(
-        "Inventario", "object_id", "content_type", related_query_name="dispositivo"
+        "Inventario", "object_id", "content_type", related_query_name="dispositivo",
     )
     
     def __str__(self):
-        return f"{self.marca} {self.modelo} {self.num_serie} {self.tipo} {self.proveedor}"
+        return f"{self.marca} {self.modelo} {self.num_serie}"
 
 
 class Software(models.Model):
-    tiempo_vida = (
-        ('0', 'Permantente'),
+    marca = models.ForeignKey(Marca,max_length=100, on_delete=models.CASCADE,related_name='software')
+    version = models.CharField(max_length=100)
+    fecha_instalacion = models.DateField(verbose_name="Fecha de instalación", null=True,blank=True)
+    cuenta_asociada = models.CharField(max_length=100, null=True,blank=True)
+    inventario = GenericRelation(
+        "Inventario", "object_id", "content_type", related_query_name="software", 
+    )
+    
+    def __str__(self):
+        return f"{self.marca} {self.version}"
+    
+class Inventario(models.Model):
+
+    DURACION = (
+        ('0', 'Permanente'),
         ('1', 'Un Año'),
         ('2', 'Dos años'),
         ('3','Tres años'),
         ('4','Cuatro años'),
     )
+    limit = models.Q(app_label='inventario', model='dispositivo') | models.Q (app_label='inventario', model='software')
+    
     nombre = models.CharField(max_length=100)
-    marca = models.ForeignKey(Marca,max_length=100, on_delete=models.CASCADE)
-    version = models.CharField(max_length=100)
-    cantidad_licencias = models.IntegerField(default=0)
-    duracion = models.CharField(choices=tiempo_vida, default="0", max_length=5) # duracion en años
-    fecha_registro = models.DateField(auto_now=True)
-    fecha_compra = models.DateField(null=True, blank=True)
-    fecha_caducidad = models.DateField(null=True, blank=True)
-    inventario = GenericRelation(
-        "Inventario", "object_id", "content_type", related_query_name="software", 
-    )
-    
-    def fecha_caducidad(self):
-        return date.today().year - self.nacdate.year
-    
-    def __str__(self):
-        return f"{self.nombre} {self.cantidad_licencias} {self.fecha_compra}"
-    
-    # realizar una funcion. para calcular el tiempo de vida del producto.
-    
-
-class Inventario(models.Model):
-    tipo_hs = (
-        ('H', 'Hardware'),
-        ('S', 'Software'),
-    )
-    nombre = models.CharField(max_length=100)
-    #fecha_ingreso = models.DateField()
     valor = models.FloatField()
-    numero_orden = models.CharField(max_length=80, blank=True, null=True)
-    tipo = models.CharField(choices=tipo_hs, max_length=20) # tipo software o hardware
+    
     disponible = models.BooleanField(default=False)
-    #archivo = models.ImageField(upload_to="datos/", height_field=None, width_field=None, max_length=None, null=True)
+    duracion = models.CharField(choices=DURACION, default="0", max_length=5) # duracion en años
+    fecha_registro = models.DateField(auto_now=True)
+    fecha_entrega = models.DateField(null=True, blank=True)
+    fecha_caducidad = models.DateField(null=True, blank=True)
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT, null=True)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
-    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True)
     factura = models.ForeignKey(Factura, on_delete=models.CASCADE, null=True)
     persona_asignada = models.ForeignKey(Persona, on_delete=models.CASCADE, null=True, blank=True)
-# como vamos hacer la asignación de equipos y software para las personas. Vmaos a usar esta misma tabla
-# o realizamos una nueva aplicacion.
- # Para la asignación de equipos y software a las personas, En la misma tabla Inventario y agregar un nuevo campo que indique a qué persona está asignado el producto. De esta manera, podrías relacionar los productos de inventario con las personas correspondientes.
-    limit = models.Q(app_label='inventario', model='dispositivo') | models.Q(app_label='inventario', model='software')
+    observacion = models.TextField(null=True, blank=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=limit )
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")
 
+    def calcular_fecha_caducidad(self):
+        if self.fecha_entrega and (self.duracion != '0'):
+            years = int(self.duracion)
+            days = years * 365 + years // 4  # Asumiendo años bisiestos cada 4 años
+            return  self.fecha_entrega + timedelta(days=days)
+        return None
+    
+    @property
+    def tiempo_de_vida(self):
+        if self.fecha_entrega and self.duracion:
+            fecha_actual = datetime.now().date()
+            tiempo_de_vida = self.fecha_caducidad - fecha_actual
+        return tiempo_de_vida.days
+    
+    def save(self, *args, **kwargs):       
+        if self.pk:  # Si el objeto ya existe en la base de datos
+            old_obj = Inventario.objects.get(pk=self.pk)  # Obtener el objeto anterior
+            if old_obj.duracion != self.duracion:  # Si la duración ha cambiado
+                self.fecha_caducidad = self.calcular_fecha_caducidad()  # Calcular la nueva fecha de caducidad
+        else:  # Si el objeto es nuevo
+            self.fecha_caducidad = self.calcular_fecha_caducidad()  # Calcular la fecha de caducidad inicial
+        super().save(*args, **kwargs)  # Llamar al método save de la superclase para guardar el objeto
     class Meta:
         indexes = [
             models.Index(fields=["content_type", "object_id"]),
         ]
     def __str__(self):
-        return f"{self.nombre} {self.valor} {self.tipo} {self.estado}"
+        return f"{self.nombre} {self.valor} {self.estado}"
     
     def get_absolute_url(self):
         return reverse("inventario: index", kwargs={"id": self.id})
