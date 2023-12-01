@@ -104,7 +104,13 @@
         <li class="nav-item">
           <a href="{% url 'inventario:index_disp' %}" class="nav-link {% if request.path == '/inventario/dispositivo/' %} active {% endif %}">
             <i class="fas fa-laptop nav-icon"></i>
-            <p>Listado Dispositivos</p>
+            <p>Listado Dispositivos tabla</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{% url 'inventario:index_disp_cards' %}" class="nav-link {% if request.path == '/inventario/dispositivocards/' %} active {% endif %}">
+            <i class="fas fa-laptop nav-icon"></i>
+            <p>Listado Dispositivos tarjetas</p>
           </a>
         </li>
         <li class="nav-item">

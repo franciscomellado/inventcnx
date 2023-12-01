@@ -31,6 +31,25 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
+        <div class="container text-center">
+          <h2>Dispositivos</h2>
+          <div class="card-columns">
+      {% for dispositivo in object_list %}
+      
+                  <div class="card" >
+                  <img src="{{ dispositivo.imagen_dispositivo.url }}" class="card-img-top" width="230" height="230">
+                  <div class="card-body">
+                      <h4 class="card-title">{{ dispositivo.marca }}</h4>
+                      <h6>{{ dispositivo.fecha_caducidad_inventario | date:'d M Y'}}</h6>
+                      <p class="card-text">{{ dispositivo.num_serie | truncatechars:70 }}</p>
+                      <a href="{% url 'inventario:detalle_disp' dispositivo.pk %}" class="btn btn-primary">Ver</a>
+                  </div>
+         
+                </div>
+      {%  endfor %}
+   
+      </div>
+
         <div class="row">
           <div class="col-12">
             
@@ -61,6 +80,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
+
                
                 <table id="dispositivoTabla" class="table table-bordered table-striped">
                   <thead>

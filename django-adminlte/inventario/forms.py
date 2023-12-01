@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from django.forms import (
     DateInput,
     DateField,
+    Textarea,
     ImageField,
     FileInput,
     ClearableFileInput,
@@ -29,13 +30,16 @@ class Inventario_form(custom_form):
     class Meta:
         model = Inventario
         fields = "__all__"
-        
+        widgets = {
+            "observacion": Textarea(attrs={ "rows": 4}),
+        }
 # ---- Formulario de Dispositivo ---
 class Dispositivo_form(custom_form):
 
     class Meta:
         model = Dispositivo
         fields = "__all__"
+        
         
 DispositivoInlineFormSet = generic_inlineformset_factory(
     Inventario,
@@ -44,6 +48,7 @@ DispositivoInlineFormSet = generic_inlineformset_factory(
     exclude = [ "fecha_caducidad"],
     can_delete=False,
     extra=1,
+    
 )
 
 DispositivoInlineFormSetUpdate = generic_inlineformset_factory(

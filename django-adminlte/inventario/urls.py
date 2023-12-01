@@ -11,10 +11,11 @@ urlpatterns = [
 
     ## Dispositivos
     path("dispositivo/", DispositivoListViews.as_view(), name="index_disp"),
+    path("dispositivocards/", DispositivoCardsListViews.as_view(), name="index_disp_cards"),
     path("dispositivo/crear", DispositivoCreateView.as_view(), name="crear_disp"),
     path("dispositivo/editar/<int:pk>", DispositivoUpdateView.as_view(), name="editar_disp"),
     path("dispositivo/eliminar/<int:pk>", DispositivoDeleteView.as_view(), name="eliminar_disp"),
-    #path("dispositivo/detalle/<int:id>", DispositivoDetailView.as_view(), name="detalle_disp"),
+    path("dispositivo/<int:pk>/", DispositivoDetailView.as_view(), name="detalle_disp"),
     
     ## Software
     path("software/", SoftwareListViews.as_view(), name="index_soft"),

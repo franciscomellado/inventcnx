@@ -4,6 +4,7 @@ from .models import Inventario, Dispositivo, Software, Proveedor, Factura
 from .forms import *
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic import DetailView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import F,Case,When
 from datetime import date, timedelta
@@ -59,7 +60,31 @@ class DispositivoListViews(SuccessMessageMixin,ListView):
             gerencia_inventario_nombre=F('inventario__persona_asignada__gerencia__gerencia'),
         )
         return queryset
+
+class DispositivoCardsListViews(SuccessMessageMixin,ListView):
+    models: Dispositivo
+    queryset = Dispositivo.objects.all()
+    template_name = 'dispositivo/dispositivo_list_cards.html'
     
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.annotate(
+            nombre_inventario=F('inventario__nombre'),
+            valor_inventario=F('inventario__valor'),
+            disponible_inventario =F('inventario__disponible'),
+            estado_inventario =F('inventario__estado__estado'),
+            fecha_registro_inventario =F('inventario__fecha_registro'),
+            fecha_entrega_inventario =F('inventario__fecha_entrega'),
+            fecha_caducidad_inventario=F('inventario__fecha_caducidad'),
+            proveedor_inventario =F('inventario__proveedor__nombre'),
+            factura_inventario = F('inventario__factura__factura'),
+            persona_nombre_inventario=F('inventario__persona_asignada__nombre'),
+            persona_apellido_inventario=F('inventario__persona_asignada__apellido'),
+            gerencia_inventario_nombre=F('inventario__persona_asignada__gerencia__gerencia'),
+        )
+        return queryset
+ 
+
 class DispositivoCreateView(SuccessMessageMixin,CreateView):
     model= Dispositivo
     template_name = "dispositivo/dispositivo_form.html"
@@ -138,6 +163,12 @@ class DispositivoDeleteView(SuccessMessageMixin,DeleteView):
 
         # Eliminar la instancia del dispositivo
         return super().delete(request, *args, **kwargs)
+    
+class DispositivoDetailView(DetailView):
+    model = Dispositivo
+    template_name = "dispositivo/dispositivo_detail.html"
+    
+
 
 ####---- Vistas para Software -----    
 class SoftwareListViews(SuccessMessageMixin,ListView):
