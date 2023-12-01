@@ -46,7 +46,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="personaTabla" class="table table-bordered table-striped">
+                <table id="dptoTabla" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Nombre</th>
@@ -105,10 +105,10 @@
 <!-- Page specific script -->
 <script>
   $(function () {
-    $("#personaTabla").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
+    $("#dptoTabla").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": True,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#personaTabla_wrapper .col-md-6:eq(0)');
+    }).buttons().container().appendTo('#dptoTabla_wrapper .col-md-6:eq(0)');
     $('#example2').DataTable({
       "paging": true,
       "lengthChange": false,

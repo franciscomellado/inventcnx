@@ -83,7 +83,7 @@
                       <td>{{ software.marca}}</td>
                       <td>{{ software.version}}</td>
                       <td>{{ software.cantidad_licencias}}</td>
-                      <td>{{ software.duracion}}  Año</td>
+                      <td>{{ software.duracion }} Año {{ software.duracion|pluralize}}</td>
                       <td>{% if software.disponible_inventario %}{{ 'Si' }}{% else %}{{ 'No'}}{% endif %}</td>
                       <td>{{ software.estado_inventario}}</td>
                       <td>{{ software.fecha_compra |date:"SHORT_DATE_FORMAT"}}</td>
