@@ -1,4 +1,4 @@
-from pyexpat import model
+import os
 from django.db import models
 from personas.models import Persona
 from django.contrib.contenttypes.fields import GenericRelation
@@ -6,6 +6,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.urls import reverse
 from datetime import date, timedelta, datetime
+from .utils.resize import resize_image
 class Estado(models.Model):
     estado = models.CharField(max_length=100,  unique=True)
 
@@ -38,7 +39,7 @@ class Factura(models.Model):
     fecha_factura = models.DateField(null=True, blank=True)
     uploadedFile = models.FileField(upload_to="facturas/", null=True, blank=True)
     fecha_registro = models.DateField(auto_now=True)
-    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, null=True)
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT, null=True)
     orden_de_compra = models.CharField(max_length=50,null=True,blank=True)
     cantidad_licencias = models.IntegerField(default=0)
     comentarios = models.TextField(null=True, blank=True)
@@ -46,18 +47,33 @@ class Factura(models.Model):
     def __str__(self):
         return self.factura
     
-
+class CustomManager(models.Manager):
+    def delete(self):
+        for obj in self.get_queryset():
+            obj.delete()
 class Dispositivo(models.Model):
     marca = models.ForeignKey(Marca, on_delete=models.CASCADE)
     modelo = models.CharField(max_length=100)
     num_serie = models.CharField(max_length=100, unique=True)
     tipo_dispositivo = models.ForeignKey(TipoDispositivo, on_delete=models.CASCADE)
     imei = models.CharField(max_length=100, blank=True, null=True)
-    imagen_dispositivo = models.ImageField(upload_to="datos/dispositivos/", null=True, verbose_name="Foto Dispositivo")
+    imagen_dispositivo = models.ImageField(upload_to="datos/dispositivos/", null=True, blank=True, verbose_name="Foto Dispositivo")
     inventario = GenericRelation(
         "Inventario", "object_id", "content_type", related_query_name="dispositivo",
     )
-    
+    objects = CustomManager() # just add this line of code inside of your model
+
+    def delete(self,*args,**kwargs):
+        
+        if self.imagen_dispositivo and os.path.isfile(self.imagen_dispositivo.path):
+            os.remove(self.imagen_dispositivo.path)
+        super(Dispositivo, self).delete(*args,**kwargs)
+        
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.imagen_dispositivo:
+            resize_image(self.imagen_dispositivo.path)
+            
     def __str__(self):
         return f"{self.marca} {self.modelo} {self.num_serie}"
 
@@ -87,13 +103,11 @@ class Inventario(models.Model):
     
     nombre = models.CharField(max_length=100)
     valor = models.FloatField()
-    
     disponible = models.BooleanField(default=False)
     duracion = models.CharField(choices=DURACION, default="0", max_length=5) # duracion en años
     fecha_registro = models.DateField(auto_now=True)
     fecha_entrega = models.DateField(null=True, blank=True)
     fecha_caducidad = models.DateField(null=True, blank=True)
-    proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT, null=True)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
     factura = models.ForeignKey(Factura, on_delete=models.CASCADE, null=True)
     persona_asignada = models.ForeignKey(Persona, on_delete=models.CASCADE, null=True, blank=True)
@@ -105,7 +119,7 @@ class Inventario(models.Model):
     def calcular_fecha_caducidad(self):
         if self.fecha_entrega and (self.duracion != '0'):
             years = int(self.duracion)
-            days = years * 365 + years // 4  # Asumiendo años bisiestos cada 4 años
+            days = years * 365 + years // 4  
             return  self.fecha_entrega + timedelta(days=days)
         return None
     

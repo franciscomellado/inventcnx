@@ -37,13 +37,17 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Listado de Departamentos</h3>
-                <span class= "float-right">
+                <div class="clearfix">
+                  {% include 'includes/messages.html' %}
+                  <span class= "float-right">
+               
                 <a  class="btn btn-app bg-primary btn-sm" title="add-person" href="{% url 'personas:crear_dpto' %}">
                   <i class="fa fa-user-plus"></i>
                   Agregar
                 </a>
                 </span>
               </div>
+            </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="dptoTabla" class="table table-bordered table-striped">

@@ -37,24 +37,16 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Listado de Software</h3>
-                <span class= "float-right">
+                <div class="clearfix">
+                  {% include 'includes/messages.html' %}
+                  <span class= "float-right">
+                
                 <a  class="btn btn-app bg-primary btn-sm" title="add-inven" href="{% url 'inventario:crear_soft' %}">
                   <i class="fa fa-user-plus"></i>
                   Agregar
                 </a>
                 </span>
-                <span class="float-left m-3">
-                  {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-                 </span>
+              </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -83,11 +75,11 @@
                       <td>{{ software.marca}}</td>
                       <td>{{ software.version}}</td>
                       <td>{{ software.cantidad_licencias}}</td>
-                      <td>{{ software.duracion }} Año {{ software.duracion|pluralize}}</td>
+                      <td>{{ software.duracion_inventario }} Año {{ software.duracion_inventario|pluralize}}</td>
                       <td>{% if software.disponible_inventario %}{{ 'Si' }}{% else %}{{ 'No'}}{% endif %}</td>
                       <td>{{ software.estado_inventario}}</td>
-                      <td>{{ software.fecha_compra |date:"SHORT_DATE_FORMAT"}}</td>
-                      <td>{{ software.fecha_caducidad |date:"SHORT_DATE_FORMAT"}}</td>
+                      <td>{{ software.fecha_factura_inventario |date:"SHORT_DATE_FORMAT"}}</td>
+                      <td>{{ software.fecha_caducidad_inventario |date:"SHORT_DATE_FORMAT"}}</td>
                       
                       <td>{{ software.persona_nombre_inventario }} {{ software.persona_apellido_inventario }}</td>
                       <td>{{ software.gerencia_inventario_nombre}}</td>

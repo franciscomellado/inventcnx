@@ -37,26 +37,18 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Listado de Dispositivos</h3>
-                <div>
-               
+                <div class="clearfix">
+                {% include 'includes/messages.html' %}
                 <span class= "float-right">
-                <a  class="btn btn-app bg-primary btn-sm" title="add-inven" href="{% url 'inventario:crear_disp' %}">
-                  <i class="fa fa-user-plus"></i>
-                  Agregar
-                </a>
-                </span>
-                <span class="float-left m-3">
-                  {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-                 </span>
+                  <a  class="btn btn-app bg-primary btn-sm" title="add-inven" href="{% url 'inventario:crear_disp' %}">
+                    <i class="fa fa-user-plus"></i>
+                    Agregar
+                  </a>
+                  </span>
+                <div>
+                </div>
+                
+                
               </div>
               </div>
               <!-- /.card-header -->
@@ -84,7 +76,7 @@
                   <tbody>
                     {% for dispositivo in object_list %}
                     <tr>
-                      <td>{{ dispositivo.marca}}{{dispositivo.inventario.disponible}}</td>
+                      <td>{{ dispositivo.marca}}</td>
                       <td>{{ dispositivo.modelo}}</td>
                       <td>{{ dispositivo.num_serie}}</td>
                       <td>{{ dispositivo.imei |default_if_none:"-"}}</td>
@@ -93,7 +85,7 @@
                       <td>{{ dispositivo.fecha_registro_inventario|date:"SHORT_DATE_FORMAT"}}</td>
                       <td>{{ dispositivo.fecha_entrega_inventario|date:"SHORT_DATE_FORMAT"}}</td>
                       <td>{{ dispositivo.fecha_caducidad_inventario|date:"SHORT_DATE_FORMAT" | default:"<small>Perpetua</small>" }}</td>
-                      <td>{{ dispositivo.proveedor_inventario}}</td>
+                      <td>{{ dispositivo.proveedor_factura_inventario}}</td>
                       <td>{{ dispositivo.factura_inventario}}</td>
                       <td>{{ dispositivo.persona_nombre_inventario|default_if_none:'<span class="badge badge-success">No Asignado</span>' }} {{ dispositivo.persona_apellido_inventario|default_if_none:''}}</td>
                       <td>{{ dispositivo.gerencia_inventario_nombre|default_if_none:'-'}}</td>

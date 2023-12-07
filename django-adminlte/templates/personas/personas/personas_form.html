@@ -1,5 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block title %} Crear Elemento. {% endblock title %}
 
@@ -16,13 +17,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Ingresar Departamento</h1>
+            <h1>Ingresar nuevo usuario al sistema.</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               {% comment %} <li class="breadcrumb-item"><a href="{% url 'personas:index' %}">Home</a></li> {% endcomment %}
-              <li class="breadcrumb-item active">Ingresar Departamento</li>
-              <li class="breadcrumb-item"><a href="{% url 'personas:dpto' %}">Vover</a></li>
+              <li class="breadcrumb-item active">Ingresar Persona</li>
+              <li class="breadcrumb-item"><a href="{% url 'personas:index' %}">Vover</a></li>
             </ol>
           </div>
         </div>
@@ -41,44 +42,37 @@
                 <h3 class="card-title">Ingreso Personas</h3>
               </div>
               <!-- /.card-header -->
-             
               <!-- form start -->
               <form class="form-horizontal" action="" method="post" >
                 {% csrf_token %}
                 <div class="card-body">
-                  <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-2 col-form-label">{{form.nombre.label_tag }}</label>
-                    <div class="col-sm-10">
-                      {{ form.nombre }}
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h2>Personas</h2>
+                      {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                      {% endfor %}
+
+                      {% for field in form.visible_fields %}
+                        <div class="form-group row">
+                          <label for="{{ field.id_for_label }}" class="col-sm-2 col-form-label">{{ field.label  }}</label>
+                          <div class="col-sm-10">
+                            {{ field|add_class:'form-control'  }}
+                          </div>
+                          {% for error in field.errors %}
+                            <span class="help-block">{{ error }}</span>
+                          {% endfor %}
+                        </div>
+                      {% endfor %}
                     </div>
-                    {{ form.nombre.errors}}
                   </div>
-                  <div class="form-group row">
-                    <label  class="col-sm-2 col-form-label">{{form.apellido.label_tag }}</label>
-                    <div class="col-sm-10">
-                     {{ form.apellido }}
-                    </div>
-                    {{ form.apellido.errors}}
-                  </div>
-                  <div class="form-group row">
-                    <label  class="col-sm-2 col-form-label">{{form.email.label_tag }}</label>
-                    <div class="col-sm-10">
-                     {{ form.email }}
-                    </div>
-                    {{ form.email.errors}}
-                  </div>
-                  <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">{{form.gerencia.label_tag }}</label>
-                    <div class="col-sm-10">
-                     {{ form.gerencia }}
-                    </div>
-                    {{ form.gerencia.errors}}
-                  </div>
+                    
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
                   <button type="submit" class="btn btn-info">Aceptar</button>
-                  <a href="{% url 'personas:dpto' %}" class="btn btn-outline-secondary shadow-2 mr-4">Cancelar</a>
+                  <a href="{% url 'personas:index' %}" class="btn btn-outline-secondary shadow-2 float-right mr-4">Cancelar</a>
+                  
                 </div>
                 <!-- /.card-footer -->
               </form>

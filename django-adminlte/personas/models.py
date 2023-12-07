@@ -12,7 +12,7 @@ class Persona(models.Model):
     apellido = models.CharField(max_length=100)
     email = models.EmailField()
     usuario = models.CharField(max_length=100, null=True,blank=True)
-    gerencia = models.ForeignKey(Departamento, on_delete=models.CASCADE)
+    gerencia = models.ForeignKey(Departamento, on_delete=models.PROTECT)
 
     def __str__(self):
         return f"{self.nombre} {self.apellido}"

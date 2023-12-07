@@ -37,6 +37,9 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Listado de usuarios agregados al sistema.</h3>
+                <div class="clearfix">
+                  {% include 'includes/messages.html' %}
+                 
                 <span class= "float-right">
                 <a  class="btn btn-app bg-primary btn-sm" title="add-person" href="{% url 'personas:crear' %}">
                   <i class="fa fa-user-plus"></i>
@@ -44,6 +47,7 @@
                 </a>
                 </span>
               </div>
+            </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="personaTabla" class="table table-bordered table-striped">
@@ -52,6 +56,7 @@
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Correo</th>
+                    <th>Usuario</th>
                     <th>gerencia</th>
                     <th >Acción</th>
                   </tr>
@@ -62,6 +67,7 @@
                       <td>{{ persona.nombre}}</td>
                       <td>{{ persona.apellido}}</td>
                       <td>{{ persona.email}}</td>
+                      <td>{{ persona.usuario|default:"" }}</td>
                       <td>{{ persona.gerencia}}</td>
                       <td class="text-sm-right">
                         <a class="btn btn-info btn-sm" href="{% url 'personas:editar' persona.pk %}">
