@@ -60,6 +60,7 @@
                     <th>Orden de compra</th>
                     <th >Cant. licencias</th>
                     <th>comentarios</th>
+                    <th>PDF</th>
                     <th >Acción</th>
                   </tr>
                   </thead>   
@@ -73,7 +74,16 @@
                       <td>{{ factura.orden_de_compra}}</td>
                       <td>{{ factura.cantidad_licencias}}</td>
                       <td>{{ factura.comentarios}}</td>
-                      
+                      <td>
+                        {% if factura.facturapdf %}
+                        <a href="{{ factura.facturapdf.url }}" class="" target="_blank">
+                          <i class="fas fa-file-pdf fa-2x" style="color:red;"></i>
+                        </a>
+                        {% else %}
+                            No hay archivo adjunto
+                        {% endif %}
+                        
+                      </td>
                       <td class="text-sm-right">
                         <a class="btn btn-info btn-sm" href="{% url 'inventario:editar_factu' factura.pk %}">
                             <i class="fas fa-pencil-alt">
