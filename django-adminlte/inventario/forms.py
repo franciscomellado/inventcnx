@@ -39,7 +39,9 @@ class Dispositivo_form(custom_form):
     class Meta:
         model = Dispositivo
         fields = "__all__"
-        
+        widgets = {
+            "observacion": Textarea(attrs={"cols": 80, "rows": 8}),
+        }
         
 DispositivoInlineFormSet = generic_inlineformset_factory(
     Inventario,

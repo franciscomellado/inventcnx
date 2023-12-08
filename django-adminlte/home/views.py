@@ -11,11 +11,11 @@ def index(request):
     cantpersonas = Persona.objects.all().count()
     cantproveedores = Proveedor.objects.all().count()
     cantdispositivos = Dispositivo.objects.all().count()
-    cantdispositivos_asignados = Dispositivo.objects.filter(inventario__persona_asignada__isnull=False).count()
+    cantdispositivos_asignados = Dispositivo.objects.filter(persona_asignada__isnull=False).count()
     cantdispositivos_no_asignados = cantdispositivos - cantdispositivos_asignados
     cantsoftwares = Software.objects.all().count()
-    cantsoftwares_asignados = Software.objects.filter(inventario__persona_asignada__isnull=False).count()
-    cantsoftwares_no_asignados = cantsoftwares - cantsoftwares_asignados
+    #cantsoftwares_asignados = Software.objects.filter(inventario__persona_asignada__isnull=False).count()
+    #cantsoftwares_no_asignados = cantsoftwares - cantsoftwares_asignados
     cantfacturas = Factura.objects.all().count()
     cantinventario = Inventario.objects.all().count()
     context = {
@@ -27,8 +27,8 @@ def index(request):
         'cantDispositivosAsignados': cantdispositivos_asignados,
         'cantDispositivosNoAsignados': cantdispositivos_no_asignados,
         'cantSoftwares': cantsoftwares,
-        'cantSoftwaresAsignados': cantsoftwares_asignados,
-        'cantSoftwaresNoAsignados': cantsoftwares_no_asignados,
+        # 'cantSoftwaresAsignados': cantsoftwares_asignados,
+        # 'cantSoftwaresNoAsignados': cantsoftwares_no_asignados,
         'cantFacturas': cantfacturas,
         'cantInventario': cantinventario,
 

@@ -33,10 +33,7 @@ def annotate_inventory_fields(queryset):
             proveedor_factura_inventario = F('inventario__factura__proveedor__nombre'),
             orden_de_compra_inventario = F('inventario__factura__orden_de_compra'),
             comentariosfactura_inventario = F('inventario__factura__comentarios'),
-            #persona asignada
-            persona_nombre_inventario=F('inventario__persona_asignada__nombre'),
-            persona_apellido_inventario=F('inventario__persona_asignada__apellido'),
-            gerencia_inventario_nombre=F('inventario__persona_asignada__gerencia__gerencia'),
+            
             #otras
             tiempo_de_vida_inventario=ExpressionWrapper( date.today() -
                 F('inventario__factura__fecha_factura'),
@@ -76,6 +73,7 @@ class DispositivoListViews(LoginRequiredMixin,ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = annotate_inventory_fields(queryset)
+        print (queryset.query)
         return queryset
 
 class DispositivoCardsListViews(LoginRequiredMixin,ListView):

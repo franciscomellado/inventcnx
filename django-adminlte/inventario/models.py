@@ -36,7 +36,7 @@ class TipoDispositivo(models.Model):
 
 class Factura(models.Model):
     factura = models.CharField(max_length=100)
-    fecha_factura = models.DateField(null=True, blank=True)
+    fecha_factura = models.DateField()
     facturapdf = models.FileField(upload_to="facturas/", null=True, blank=True)
     fecha_registro = models.DateField(auto_now=True)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT, null=True)
@@ -58,6 +58,7 @@ class Dispositivo(models.Model):
     tipo_dispositivo = models.ForeignKey(TipoDispositivo, on_delete=models.CASCADE)
     imei = models.CharField(max_length=100, blank=True, null=True)
     imagen_dispositivo = models.ImageField(upload_to="datos/dispositivos/", null=True, blank=True, verbose_name="Foto Dispositivo")
+    persona_asignada = models.ForeignKey(Persona, on_delete=models.CASCADE, null=True, blank=True)
     inventario = GenericRelation(
         "Inventario", "object_id", "content_type", related_query_name="dispositivo",
     )
@@ -110,7 +111,6 @@ class Inventario(models.Model):
     fecha_caducidad = models.DateField(null=True, blank=True)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
     factura = models.ForeignKey(Factura, on_delete=models.CASCADE, null=True)
-    persona_asignada = models.ForeignKey(Persona, on_delete=models.CASCADE, null=True, blank=True)
     observacion = models.TextField(null=True, blank=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=limit )
     object_id = models.PositiveIntegerField()

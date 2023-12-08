@@ -87,8 +87,13 @@
                       <td>{{ dispositivo.fecha_caducidad_inventario|date:"SHORT_DATE_FORMAT" | default:"<small>Perpetua</small>" }}</td>
                       <td>{{ dispositivo.proveedor_factura_inventario}}</td>
                       <td>{{ dispositivo.factura_inventario}}</td>
-                      <td>{{ dispositivo.persona_nombre_inventario|default_if_none:'<span class="badge badge-success">No Asignado</span>' }} {{ dispositivo.persona_apellido_inventario|default_if_none:''}}</td>
-                      <td>{{ dispositivo.gerencia_inventario_nombre|default_if_none:'-'}}</td>
+                      {% if dispositivo.persona_asignada %}
+                        <td>{{  dispositivo.persona_asignada.nombre}} {{dispositivo.persona_asignada.apellido }}</td>
+                      {% else %}
+                      <td><span class="badge badge-success">No Asignado</span></td>
+                      {% endif %}
+                      
+                      <td>{{ dispositivo.persona_asignada.gerencia.gerencia|default_if_none:'-'}}</td>
                       <td class="text-sm-right">
                         <a class="btn btn-info btn-sm" href="{% url 'inventario:editar_disp' dispositivo.pk %}">
                             <i class="fas fa-pencil-alt">

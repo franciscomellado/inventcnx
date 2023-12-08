@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     "home",
     "personas",
     "inventario",
+    "licencias",
 ]
 
 MIDDLEWARE = [

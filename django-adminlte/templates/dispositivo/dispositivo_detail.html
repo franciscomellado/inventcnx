@@ -51,14 +51,18 @@
                       <h3 class="d-inline-block d-sm-none">Dispositivo {{object.marca}}</h3>
                       <div class="col-12">
                         <h3> {{object.tipo_dispositivo.nombre}}</h3>
-                        <img src="{{ object.imagen_dispositivo.url }}" class="product-image" alt="Product Image">
+                        {% if dispositivo.imagen_dispositivo %}
+                            <img src="{{ dispositivo.imagen_dispositivo.url }}" alt="Imagen del Dispositivo" width="100%">
+                        {% else %}
+                            <img src="{% static 'dist/img/default-150x150.png' %}" alt="Imagen por defecto" width="100%">
+                        {% endif %}
                       </div>
                       <div class="row mt-4">
                         <nav class="w-100">
                           <div class="nav nav-tabs" id="product-tab" role="tablist">
                             <a class="nav-item nav-link active" id="factura-tab" data-toggle="tab" href="#factura" role="tab" aria-controls="factura" aria-selected="true">Factura</a>
                             <a class="nav-item nav-link" id="observacion_dispo-tab" data-toggle="tab" href="#observacion_dispo" role="tab" aria-controls="observacion_dispo" aria-selected="false">Observación</a>
-                            {% if object.persona_nombre_inventario %}
+                            {% if object.persona_asignada %}
                             <a class="nav-item nav-link" id="persona-asignada-tab" data-toggle="tab" href="#persona-asignada" role="tab" aria-controls="persona-asignada" aria-selected="false">Persona</a>
                             {% endif %}
                           </div>
@@ -88,15 +92,15 @@
                             </table>
                             </div>
                           <div class="tab-pane fade" id="observacion_dispo" role="tabpanel" aria-labelledby="observacion_dispo-tab"> {{object.observacion_inventario}} </div>
-                          {% if object.persona_nombre_inventario %}
+                          {% if object.persona_asignada %}
                           
                           <div class="tab-pane fade" id="persona-asignada" role="tabpanel" aria-labelledby="persona-asignada-tab">
                             <table class="table">
                             <tr>                                  
-                                <th>Nombre</th><td>{{ object.persona_nombre_inventario}} </td>
+                                <th>Nombre</th><td>{{ object.persona_asignada.nombre}} </td>
                             </tr>
                             <tr>
-                                <th>Apellido</th><td>{{ object.persona_apellido_inventario }}</td>
+                                <th>Apellido</th><td>{{ object.persona_asignada.apellido }}</td>
                             </tr>
                             <tr>
                                 <th>Gerencia</th><td>{{ object.gerencia_inventario_nombre }}</td>
