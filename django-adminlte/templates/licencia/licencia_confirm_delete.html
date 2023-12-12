@@ -1,0 +1,55 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block title %} Inventario {% endblock title %}
+{% block extrastyle %}
+{% endblock extrastyle %}
+{% block bodyclass %}  {% endblock bodyclass %}
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Personas</h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+            <li class="breadcrumb-item active">Personas</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container">
+      <div class="container text-center">
+      <div class="row justify-content-md-center">
+        <!-- left column -->
+        <div class="col-md-8">
+          <!-- Horizontal Form -->
+          <div class="card card-danger">
+            <div class="card-header">
+              <h3 class="card-title"><i class="fas fa-exclamation-triangle"></i>
+              </h3>
+            </div>
+            <!-- /.card-header -->
+            
+            <!-- Default box -->
+            <form method="post" class="card" enctype="multipart/form-data" >
+                {% csrf_token %}
+                <p class="mt-3">Está a punto de eliminar la persona <h3 class="fw-bolder accent-danger">{{object}}</h3>.</p><br>
+                <p>Esta acción no se puede deshacer. ¿Está seguro de que desea continuar?</p>
+                <div class="text-right">
+                    <a href="{% url 'personas:index' %}" class="btn btn-outline-secondary shadow-2 mr-4">Cancelar</a>
+                    <button type="submit" value="Delete" class="btn btn-danger shadow-2 mr-4">Eliminar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

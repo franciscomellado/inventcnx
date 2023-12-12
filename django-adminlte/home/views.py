@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from inventario.models import Proveedor, Dispositivo,Software,Factura,Inventario
+from licencias.models import Licencia,LicenciaUsuario
 from personas.models import Persona
 
 
@@ -14,10 +15,11 @@ def index(request):
     cantdispositivos_asignados = Dispositivo.objects.filter(persona_asignada__isnull=False).count()
     cantdispositivos_no_asignados = cantdispositivos - cantdispositivos_asignados
     cantsoftwares = Software.objects.all().count()
-    #cantsoftwares_asignados = Software.objects.filter(inventario__persona_asignada__isnull=False).count()
-    #cantsoftwares_no_asignados = cantsoftwares - cantsoftwares_asignados
     cantfacturas = Factura.objects.all().count()
     cantinventario = Inventario.objects.all().count()
+    cantlicenciasregistradas = Licencia.objects.all().count()
+    licencias = Software.objects.aggregate(totallic=Sum('cantidad_licencias'))
+    cantLicenciasCompradas = licencias['totallic']
     context = {
         'parent': 'dashboard',
         'segment': 'dashboardv1',
@@ -27,8 +29,8 @@ def index(request):
         'cantDispositivosAsignados': cantdispositivos_asignados,
         'cantDispositivosNoAsignados': cantdispositivos_no_asignados,
         'cantSoftwares': cantsoftwares,
-        # 'cantSoftwaresAsignados': cantsoftwares_asignados,
-        # 'cantSoftwaresNoAsignados': cantsoftwares_no_asignados,
+        'cantlicenciasregistradas': cantlicenciasregistradas,
+        'cantLicenciasCompradas': cantLicenciasCompradas,
         'cantFacturas': cantfacturas,
         'cantInventario': cantinventario,
 

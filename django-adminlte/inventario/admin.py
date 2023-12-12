@@ -9,21 +9,13 @@ class InventarioInline(GenericStackedInline):
 class ProveedorAdmin(admin.ModelAdmin):
     list_display = ("nombre", "codigo", "contacto")
     
-
 class SoftwareAdmin(admin.ModelAdmin):
     list_display = ( "marca","version",)
     inlines = [InventarioInline]
-  
-
 
 class DispositivoAdmin(admin.ModelAdmin):
-    
     inlines = [InventarioInline]
- 
-    
-    
 
-    
 admin.site.register(Estado)
 admin.site.register(Marca)
 admin.site.register(TipoDispositivo)

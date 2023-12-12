@@ -22,15 +22,17 @@ from admin_adminlte import views
 
 urlpatterns = [
     
-    # path("", include('admin_adminlte.urls')),
-    
-    path("login/", LoginView.as_view(), name="login"),
-    path("logout/", LogoutView.as_view(), name="logout"),
+    # 
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('accounts/register/', views.register, name='register'),
-    path("admin/", admin.site.urls),
-    path("inventario/", include('inventario.urls', namespace="inventario")),
-    path("personas/", include('personas.urls', namespace="personas")),
-    path("", include('home.urls')),
+    path('admin/', admin.site.urls),
+    path('inventario/', include('inventario.urls', namespace='inventario')),
+    path('personas/', include('personas.urls', namespace='personas')),
+    path('licencias/', include('licencias.urls', namespace='licencias')),
+    
+    path('', include('home.urls')),
+    path('', include('admin_adminlte.urls')),
     
 ] 
 

@@ -1,4 +1,5 @@
 import os
+from pyexpat import model
 from django.db import models
 from personas.models import Persona
 from django.contrib.contenttypes.fields import GenericRelation
@@ -41,7 +42,6 @@ class Factura(models.Model):
     fecha_registro = models.DateField(auto_now=True)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT, null=True)
     orden_de_compra = models.CharField(max_length=50,null=True,blank=True)
-    cantidad_licencias = models.IntegerField(default=0)
     comentarios = models.TextField(null=True, blank=True)
     
     def __str__(self):
@@ -80,10 +80,12 @@ class Dispositivo(models.Model):
 
 
 class Software(models.Model):
-    marca = models.ForeignKey(Marca,max_length=100, on_delete=models.CASCADE,related_name='software')
+    marca = models.ForeignKey(Marca,max_length=100, on_delete=models.CASCADE)
     version = models.CharField(max_length=100)
     fecha_instalacion = models.DateField(verbose_name="Fecha de instalación", null=True,blank=True)
     cuenta_asociada = models.CharField(max_length=100, null=True,blank=True)
+    cantidad_licencias = models.IntegerField(default=1)
+    cantidad_disponibles = models.IntegerField(editable=False, default=0)
     inventario = GenericRelation(
         "Inventario", "object_id", "content_type", related_query_name="software", 
     )
@@ -100,7 +102,7 @@ class Inventario(models.Model):
         ('3','Tres años'),
         ('4','Cuatro años'),
     )
-    limit = models.Q(app_label='inventario', model='dispositivo') | models.Q (app_label='inventario', model='software')
+    LIMIT = models.Q(app_label='inventario', model='dispositivo') | models.Q (app_label='inventario', model='software')
     
     nombre = models.CharField(max_length=100)
     valor = models.FloatField()
@@ -108,11 +110,12 @@ class Inventario(models.Model):
     duracion = models.CharField(choices=DURACION, default="0", max_length=5) # duracion en años
     fecha_registro = models.DateField(auto_now=True)
     fecha_entrega = models.DateField(null=True, blank=True)
+    fecha_modificacion = models.DateField(default=date.today)
     fecha_caducidad = models.DateField(null=True, blank=True)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
     factura = models.ForeignKey(Factura, on_delete=models.CASCADE, null=True)
     observacion = models.TextField(null=True, blank=True)
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=limit )
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=LIMIT )
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")
 

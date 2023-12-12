@@ -1,6 +1,6 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
-{% block title %} Software {% endblock title %}
+{% block title %} Listado Licencias {% endblock title %}
 {% block extrastyle %}
 <!-- DataTables -->
 <link rel="stylesheet" href="{% static 'plugins/datatables-bs4/css/dataTables.bootstrap4.min.css' %}">
@@ -16,12 +16,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Software</h1>
+            <h1>Licencias de CNX.</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Inicio</a></li>
-              <li class="breadcrumb-item active">Software</li>
+              <li class="breadcrumb-item"><a href="{% url 'licencias:index' %}">Inicio</a></li>
+              <li class="breadcrumb-item active">Licencia</li>
             </ol>
           </div>
         </div>
@@ -36,60 +36,52 @@
             
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Listado de Software</h3>
+                <h3 class="card-title">Listado de Licencias</h3>
                 <div class="clearfix">
                   {% include 'includes/messages.html' %}
-                  <span class= "float-right">
-                
-                <a  class="btn btn-app bg-primary btn-sm" title="add-inven" href="{% url 'inventario:crear_soft' %}">
+                 
+                <span class= "float-right">
+                <a  class="btn btn-app bg-primary btn-sm" title="add-licencia" href="{% url 'licencias:crear' %}">
                   <i class="fa fa-user-plus"></i>
                   Agregar
                 </a>
                 </span>
               </div>
-              </div>
+            </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="softwareTabla" class="table table-bordered table-striped">
+                <table id="licenciasTabla" class="table table-bordered table-striped">
                   <thead>
                   <tr>
                     <th>Nombre</th>
-                    <th>Marca</th>
-                    <th>Versión</th>
-                    <th >Cant de Lic</th>
-                    <th >Duración</th>
-                    <th>disponible</th>
-                    <th >Estado</th>
-                    <th >Fecha Compra</th>
-                    <th >Fecha caducidad</th>
-                   
-                    <th>Factura</th>
+                    <th>Número de identificación</th>
+                    <th>Fecha de Activación</th>
+                    <th>Fecha de Vencimiento</th>
+                    <th>Software</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
                     <th >Acción</th>
                   </tr>
-                  </thead>   
+                  </thead>
                   <tbody>
-                    {% for software in object_list %}
+                    {% for licencia in object_list %}
                     <tr>
-                      <td>{{ software.nombre_inventario}}</td>
-                      <td>{{ software.marca}}</td>
-                      <td>{{ software.version}}</td>
-                      <td>{{ software.cantidad_licencias}}</td>
-                      <td>{{ software.duracion_inventario }} Año{{ software.duracion_inventario|pluralize}}</td>
-                      <td>{% if software.disponible_inventario %}{{ 'Si' }}{% else %}{{ 'No'}}{% endif %}</td>
-                      <td>{{ software.estado_inventario}}</td>
-                      <td>{{ software.fecha_factura_inventario |date:"SHORT_DATE_FORMAT"}}</td>
-                      <td>{{ software.fecha_caducidad_inventario |date:"SHORT_DATE_FORMAT"}}</td>
-                      <td>{{ software.factura_inventario}}</td>
+                      <td>{{ licencia.nombre}}</td>
+                      <td>{{ licencia.numero_identificacion}}</td>
+                      <td>{{ licencia.fecha_activacion}}</td>
+                      <td>{{ licencia.fecha_vencimiento|default:"" }}</td>
+                      <td>{{ licencia.software.marca}} {{ licencia.software.version}}</td>
+                      <td>{{licencia.tipo_licencia.tipo }}</td>
+                      <td>{{ licencia.estado.estado}}</td>
                       
                       <td class="text-sm-right">
-                        <a class="btn btn-info btn-sm" href="{% url 'inventario:editar_soft' software.pk %}">
+                        <a class="btn btn-info btn-sm" href="{% url 'licencias:editar' licencia.pk %}">
                             <i class="fas fa-pencil-alt">
                             </i>
                         </a>
-                        <a class="btn btn-danger btn-sm" href="{% url 'inventario:eliminar_soft' software.pk %}">
-                            <i class="fas fa-trash">
-                            </i>
-                            </a>
+                        <a class="btn btn-danger btn-sm" href="{% url 'licencias:eliminar' licencia.pk %}">
+                            <i class="fas fa-trash"></i>
+                        </a>
                       </td>
                     </tr>
                     {% endfor %}
@@ -123,23 +115,14 @@
 <script src="{% static 'plugins/pdfmake/vfs_fonts.js' %}"></script>
 <script src="{% static 'plugins/datatables-buttons/js/buttons.html5.min.js' %}"></script>
 <script src="{% static 'plugins/datatables-buttons/js/buttons.print.min.js' %}"></script>
-<script src="{% static 'plugins/datatables-buttons/js/buttons.colVis.min.js' %}"></script>
 <!-- Page specific script -->
 <script>
   $(function () {
-    $("#softwareTabla").DataTable({
+    $("#licenciasTabla").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
-      {% comment %} "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"] {% endcomment %}
-    }).buttons().container().appendTo('#dispositivoTabla_wrapper .col-md-6:eq(0)');
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
+      "buttons": [ "excel", "pdf", "print"]
+    }).buttons().container().appendTo('#licenciasTabla_wrapper .col-md-6:eq(0)');
+    
   });
 </script>
 {% endblock extra_scripts %}

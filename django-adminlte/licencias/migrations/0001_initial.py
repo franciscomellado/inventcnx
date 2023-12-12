@@ -32,7 +32,7 @@ class Migration(migrations.Migration):
                 ('numero_identificacion', models.CharField(max_length=100, verbose_name='Número de identificación')),
                 ('fecha_activacion', models.DateField()),
                 ('fecha_vencimiento', models.DateField(default=datetime.date(2024, 12, 7), editable=False)),
-                ('completado', models.BooleanField(default=False, editable=False)),
+                ('disponible', models.BooleanField(default=False, editable=False)),
                 ('observacion', models.TextField()),
                 ('estado', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='licencias.estadolic')),
                 ('factura', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='facturas', to='inventario.factura')),

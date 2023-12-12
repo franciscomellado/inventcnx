@@ -52,7 +52,6 @@
             <i class="right fas fa-angle-left"></i>
           </p>
         </a>
-        
       </li>
     {% endif %}
 
@@ -72,7 +71,7 @@
       <a href="#" class="nav-link {% if '/personas/' in request.path %} active {% endif %}">
         <i class="nav-icon fas fa-users"></i>
         <p>
-          Personas
+          Módulo Personas
           <i class="fas fa-angle-left right"></i>
         </p>
       </a>
@@ -80,14 +79,14 @@
         <li class="nav-item">
           <a href="{% url 'personas:index' %}" class="nav-link {% if request.path == '/personas/' %} active {% endif %}">
             <i class="far fa-circle nav-icon"></i>
-            <p>Listado Personas</p>
+            <p>Personas</p>
           </a>
         </li>
         
         <li class="nav-item">
           <a href="{% url 'personas:dpto'  %}" class="nav-link {% if request.path == '/personas/dpto/' %} active {% endif %}">
             <i class="far fa-circle nav-icon"></i>
-            <p>Listado Departamentos</p>
+            <p>Departamentos</p>
           </a>
         </li>
       </ul>
@@ -96,7 +95,7 @@
       <a href="#" class="nav-link {% if '/inventario/' in request.path %} active {% endif %}">
         <i class="nav-icon fas fa-calculator" ></i>
         <p>
-          Inventario
+          Módulo Inventario
           <i class="fas fa-angle-left right"></i>
         </p>
       </a>
@@ -104,31 +103,48 @@
         <li class="nav-item">
           <a href="{% url 'inventario:index_disp' %}" class="nav-link {% if request.path == '/inventario/dispositivo/' %} active {% endif %}">
             <i class="fas fa-laptop nav-icon"></i>
-            <p>Listado Dispositivos tabla</p>
+            <p>Dispositivos tabla</p>
           </a>
         </li>
         <li class="nav-item">
           <a href="{% url 'inventario:index_disp_cards' %}" class="nav-link {% if request.path == '/inventario/dispositivocards/' %} active {% endif %}">
             <i class="fas fa-laptop nav-icon"></i>
-            <p>Listado Dispositivos tarjetas</p>
+            <p>Dispositivos tarjetas</p>
           </a>
         </li>
         <li class="nav-item">
           <a href="{% url 'inventario:index_soft'  %}" class="nav-link {% if request.path == '/inventario/software/' %} active {% endif %}">
             <i class="fas fa-audio-description nav-icon"></i>
-            <p>Listado Software</p>
+            <p>Software</p>
           </a>
         </li>
         <li class="nav-item">
           <a href="{% url 'inventario:index_prove'  %}" class="nav-link {% if request.path == '/inventario/proveedor/' %} active {% endif %}">
             <i class="fas fa-shopping-bag nav-icon"></i>
-            <p>Listado Proveedores</p>
+            <p>Proveedores</p>
           </a>
         </li>
         <li class="nav-item">
           <a href="{% url 'inventario:index_factu'  %}" class="nav-link {% if request.path == '/inventario/factura/' %} active {% endif %}">
             <i class="fas fa-shopping-bag nav-icon"></i>
-            <p>Listado Facturas</p>
+            <p>Facturas</p>
+          </a>
+        </li>
+      </ul>
+    </li>
+    <li class="nav-item {% if '/licencias/' in request.path %} menu-open {% endif %}">
+      <a href="#" class="nav-link {% if '/licencias/' in request.path %} active {% endif %}">
+        <i class="nav-icon fas fa-address-card "></i>
+        <p>
+          Módulo Licencias
+          <i class="fas fa-angle-left right"></i>
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+        <li class="nav-item">
+          <a href="{% url 'licencias:index' %}" class="nav-link {% if request.path == '/licencias/' %} active {% endif %}">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Licencias</p>
           </a>
         </li>
       </ul>

@@ -73,7 +73,6 @@ class DispositivoListViews(LoginRequiredMixin,ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = annotate_inventory_fields(queryset)
-        print (queryset.query)
         return queryset
 
 class DispositivoCardsListViews(LoginRequiredMixin,ListView):
