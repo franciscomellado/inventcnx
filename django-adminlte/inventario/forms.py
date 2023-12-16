@@ -31,7 +31,7 @@ class Inventario_form(custom_form):
         model = Inventario
         fields = "__all__"
         widgets = {
-            "observacion": Textarea(attrs={ "rows": 4}),
+            "observaciones": Textarea(attrs={"cols": 80, "rows": 5}),
         }
 # ---- Formulario de Dispositivo ---
 class Dispositivo_form(custom_form):
@@ -40,7 +40,7 @@ class Dispositivo_form(custom_form):
         model = Dispositivo
         fields = "__all__"
         widgets = {
-            "observacion": Textarea(attrs={"cols": 80, "rows": 8}),
+            "observaciones": Textarea(attrs={"cols": 80, "rows": 5}),
         }
         
 DispositivoInlineFormSet = generic_inlineformset_factory(
@@ -97,4 +97,6 @@ class Factura_form(custom_form):
     class Meta:
         model = Factura
         fields = '__all__'
-    
+        widgets = {
+            "observacion": Textarea(attrs={"cols": 80, "rows": 5}),
+        }

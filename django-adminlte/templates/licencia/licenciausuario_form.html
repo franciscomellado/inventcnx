@@ -1,0 +1,149 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} Asignar Licencias {% endblock title %}
+
+{% block bodyclass %} hold-transition sidebar-mini {% endblock bodyclass %}
+{% block extrastyle %}
+<link rel="stylesheet" href="{% static 'plugins/select2/css/select2.min.css' %}">
+<link rel="stylesheet" href="{% static 'plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css' %}">
+{% endblock extrastyle %}
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Asignar Licencia a persona</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              {% comment %} <li class="breadcrumb-item"><a href="{% url 'personas:index' %}">Home</a></li> {% endcomment %}
+              <li class="breadcrumb-item active">Asignar Licencia</li>
+              <li class="breadcrumb-item"><a href="{% url 'licencias:index' %}">Vover</a></li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <!-- left column -->
+          <div class="col-md-12">
+            <!-- Horizontal Form -->
+            <div class="card card-info">
+              <div class="card-header">
+                <h3 class="card-title">Asignar licencias</h3>
+                <div class="clearfix">
+                  {% include 'includes/messages.html' %}
+                </div>
+
+              </div>
+              <!-- /.card-header -->
+              <!-- form start -->
+              <form class="form-horizontal" method="post" >
+                {% csrf_token %}
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <h2>Asignar Licencias</h2>
+                      {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                      {% endfor %}
+
+                      {% for field in form.visible_fields %}
+                        <div class="form-group row">
+                          <label for="{{ field.id_for_label }}" class="col-sm-2 col-form-label">{{ field.label  }}</label>
+                          <div class="col-sm-10">
+                            {{ field|add_class:'form-control'  }}
+                          </div>
+                          {% for error in field.errors %}
+                            <span class="help-block">{{ error }}</span>
+                          {% endfor %}
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                    
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-info">Aceptar</button>
+                  <a href="{% url 'licencias:index' %}" class="btn btn-outline-secondary shadow-2 float-right mr-4">Cancelar</a>
+                  
+                </div>
+                <!-- /.card-footer -->
+              </form>
+            </div>
+            <!-- /.card -->
+          </div>
+          <!--/.col (left) -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+
+  {% endblock content %}
+
+  {% block extra_scripts %}
+  <script src="{% static 'plugins/select2/js/select2.full.min.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'plugins/select2/js/i18n/es.js' %}">
+  <script src="{% static 'plugins/moment/moment-with-locales.min.js' %}"></script>
+  <script src="{% static 'plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js' %}"></script>
+  <script>
+    $(function () {
+
+    $('.select2').select2({
+      language: "es",
+      width: 'resolve',
+    });
+    var select_licencia = $('select[name="licencia"]');
+    $("select[name='persona']").on("change", function() {
+      var id= $(this).val();
+      var options = '<option value = "">-----------</option>'
+      if ( id == '') {
+        select_persona.html(option);
+        return false;
+      }
+      $.ajax({
+        url: window.location.patname,
+        type: 'POST',
+        data: {
+          'id': id,
+          'action': 'getLicenciasPersona'
+          },
+          datatype: 'json',
+        }).done(function (data) {
+          if (!data.hasOwnProperty('error')) {
+            if (data.length > 0){
+              $.each(data, function (key, value) {
+                options+='<option value="'+value.id+'">'+value.nombre+'</option>';
+            });
+            select_licencia.prop("disabled", false);
+            } else{
+              alert('No se encontraron licencias para esta persona o  no disponibles');
+            };
+            return false;
+          }
+          message_error(data.error);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+          alert(textStatus + ': ' + errorThrown);
+        }).always(function (data) {
+        select_licencia.html(options);
+        });
+
+    });
+    
+      $('.datepicker').datetimepicker({
+        format: 'DD/MM/YYYY'
+      }); 
+  });
+    </script>
+  {% endblock extra_scripts %}

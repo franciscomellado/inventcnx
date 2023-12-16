@@ -1,4 +1,3 @@
-from atexit import register
 from django.contrib import admin
 from licencias.models import EstadoLic, TipoLicencia, Licencia, LicenciaUsuario
 
@@ -23,5 +22,5 @@ class LicenciaAdmin(admin.ModelAdmin):
 
 admin.site.register(EstadoLic)
 admin.site.register(TipoLicencia)
-admin.site.register(Licencia, LicenciaAdmin)
+admin.site.register(Licencia,LicenciaAdmin)
 admin.site.register(LicenciaUsuario)

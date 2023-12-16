@@ -1,7 +1,7 @@
 
 from django.forms import ModelForm
-from .models import Licencia
-from django.forms import ( DateInput, DateField, Textarea)
+from .models import Licencia,LicenciaUsuario
+from django.forms import ( DateInput, DateField, Textarea, Select)
 class custom_form(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -9,7 +9,7 @@ class custom_form(ModelForm):
             if isinstance(field, DateField):
                 field.widget = DateInput(
                     attrs={
-                        "class": "form-control datepicker",
+                        "class": "datepicker",
                         "data-toggle": "datetimepicker",
                         "data-target": "#id_" + field_name,
                     }
@@ -24,4 +24,23 @@ class Licenciaform(custom_form):
         
         widgets = {
             "observaciones": Textarea(attrs={"cols": 80, "rows": 5}),
+            "software": Select(attrs={
+                "class":"select2",
+                }),
         }
+   
+        
+class LicenciaUsuarioform(custom_form):
+    class Meta:
+        model = LicenciaUsuario
+        exclude = ["fecha_registro","creado_por"]
+        
+        widgets = {
+            "observaciones": Textarea(attrs={"cols": 80, "rows": 5}),
+            "persona": Select(attrs={"class":"select2", "style": "width: 100%"}),
+            "licencia": Select(attrs={"class":"select2", "style": "width: 100%", "disabled": "true" }),
+        
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        #self.fields['licencia'].queryset = Licencia.objects.none()

@@ -8,5 +8,5 @@ urlpatterns = [
     path("crear", LicenciasCreateView.as_view(), name="crear"),
     path("editar/<int:pk>", LicenciasUpdateView.as_view(), name="editar"),
     
-   
+    path("asignar", AsignarLicenciasView.as_view(), name="asignar"),
 ]

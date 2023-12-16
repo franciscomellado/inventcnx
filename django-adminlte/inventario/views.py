@@ -32,7 +32,7 @@ def annotate_inventory_fields(queryset):
             fecha_factura_inventario = F('inventario__factura__fecha_registro'),
             proveedor_factura_inventario = F('inventario__factura__proveedor__nombre'),
             orden_de_compra_inventario = F('inventario__factura__orden_de_compra'),
-            comentariosfactura_inventario = F('inventario__factura__comentarios'),
+            
             
             #otras
             tiempo_de_vida_inventario=ExpressionWrapper( date.today() -

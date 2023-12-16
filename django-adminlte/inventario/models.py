@@ -42,7 +42,7 @@ class Factura(models.Model):
     fecha_registro = models.DateField(auto_now=True)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT, null=True)
     orden_de_compra = models.CharField(max_length=50,null=True,blank=True)
-    comentarios = models.TextField(null=True, blank=True)
+    observacion = models.TextField(null=True, blank=True, verbose_name="observaciones")
     
     def __str__(self):
         return self.factura
@@ -113,8 +113,8 @@ class Inventario(models.Model):
     fecha_modificacion = models.DateField(default=date.today)
     fecha_caducidad = models.DateField(null=True, blank=True)
     estado = models.ForeignKey(Estado, on_delete=models.CASCADE)
-    factura = models.ForeignKey(Factura, on_delete=models.CASCADE, null=True)
-    observacion = models.TextField(null=True, blank=True)
+    factura = models.ForeignKey(Factura, on_delete=models.CASCADE, null=True,blank=True)
+    observacion = models.TextField(null=True, blank=True,verbose_name="observaciones")
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, limit_choices_to=LIMIT )
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey("content_type", "object_id")

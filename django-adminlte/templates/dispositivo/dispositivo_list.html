@@ -84,13 +84,13 @@
                       <td>{% if dispositivo.disponible_inventario %}{{ 'Si' }}{% else %}{{ 'No'}}{% endif %}</td>
                       <td>{{ dispositivo.fecha_registro_inventario|date:"SHORT_DATE_FORMAT"}}</td>
                       <td>{{ dispositivo.fecha_entrega_inventario|date:"SHORT_DATE_FORMAT"}}</td>
-                      <td>{{ dispositivo.fecha_caducidad_inventario|date:"SHORT_DATE_FORMAT" | default:"<small>Perpetua</small>" }}</td>
+                      <td>{{ dispositivo.fecha_caducidad_inventario|date:"SHORT_DATE_FORMAT" | default:"<p class='badge badge-warning text-xs'>Perpetua</p>" }}</td>
                       <td>{{ dispositivo.proveedor_factura_inventario}}</td>
                       <td>{{ dispositivo.factura_inventario}}</td>
                       {% if dispositivo.persona_asignada %}
                         <td>{{  dispositivo.persona_asignada.nombre}} {{dispositivo.persona_asignada.apellido }}</td>
                       {% else %}
-                      <td><span class="badge badge-success">No Asignado</span></td>
+                      <td><span class="badge badge-success text-xs">No Asignado</span></td>
                       {% endif %}
                       
                       <td>{{ dispositivo.persona_asignada.gerencia.gerencia|default_if_none:'-'}}</td>

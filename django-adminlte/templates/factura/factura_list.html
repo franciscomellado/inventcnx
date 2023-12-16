@@ -58,7 +58,6 @@
                     <th>Fecha registro</th>
                     <th >Proveedor</th>
                     <th>Orden de compra</th>
-                    <th >Cant. licencias</th>
                     <th>comentarios</th>
                     <th>PDF</th>
                     <th >Acción</th>
@@ -72,15 +71,14 @@
                       <td>{{ factura.fecha_registro | date:"SHORT_DATE_FORMAT"}}</td>
                       <td>{{ factura.proveedor}}</td>
                       <td>{{ factura.orden_de_compra}}</td>
-                      <td>{{ factura.cantidad_licencias}}</td>
-                      <td>{{ factura.comentarios}}</td>
+                      <td>{{ factura.observacion | default:''}}</td>
                       <td>
                         {% if factura.facturapdf %}
                         <a href="{{ factura.facturapdf.url }}" class="" target="_blank">
                           <i class="fas fa-file-pdf fa-2x" style="color:red;"></i>
                         </a>
                         {% else %}
-                            No hay archivo adjunto
+                            <p class="text-xs text-danger">No hay archivo adjunto</p>
                         {% endif %}
                         
                       </td>

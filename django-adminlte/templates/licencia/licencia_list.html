@@ -60,6 +60,7 @@
                     <th>Software</th>
                     <th>Tipo</th>
                     <th>Estado</th>
+                    <th>Asignada</th>
                     <th >Acción</th>
                   </tr>
                   </thead>
@@ -68,12 +69,23 @@
                     <tr>
                       <td>{{ licencia.nombre}}</td>
                       <td>{{ licencia.numero_identificacion}}</td>
-                      <td>{{ licencia.fecha_activacion}}</td>
-                      <td>{{ licencia.fecha_vencimiento|default:"" }}</td>
+                      <td>{{ licencia.fecha_activacion|date:"SHORT_DATE_FORMAT"}}</td>
+                      <td>{{ licencia.fecha_vencimiento|date:"SHORT_DATE_FORMAT"|default:"" }}</td>
                       <td>{{ licencia.software.marca}} {{ licencia.software.version}}</td>
                       <td>{{licencia.tipo_licencia.tipo }}</td>
                       <td>{{ licencia.estado.estado}}</td>
-                      
+                      <td class="text-center">
+                        {% if  licencia.asignada%}
+                        <span style="color: green;">
+                          <i class="fa fa-check-circle fa-2x " aria-hidden="true"></i>
+                        </span>
+                        {%else %}
+                        <span style="color: red;">
+                          <i class="fa fa-times-circle fa-2x " aria-hidden="true"></i>
+                        </span>
+                        {% endif %}
+
+                      </td>
                       <td class="text-sm-right">
                         <a class="btn btn-info btn-sm" href="{% url 'licencias:editar' licencia.pk %}">
                             <i class="fas fa-pencil-alt">

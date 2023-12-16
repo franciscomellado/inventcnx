@@ -148,6 +148,14 @@
           </a>
         </li>
       </ul>
+      <ul class="nav nav-treeview">
+        <li class="nav-item">
+          <a href="{% url 'licencias:asignar' %}" class="nav-link {% if request.path == '/asignar/' %} active {% endif %}">
+            <i class="far fa-circle nav-icon"></i>
+            <p>Asignar Licencias</p>
+          </a>
+        </li>
+      </ul>
     </li>
     {% endif %}
 
