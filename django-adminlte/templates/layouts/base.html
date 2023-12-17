@@ -1,4 +1,4 @@
-{% load static %}
+{% load i18n static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -60,14 +60,7 @@
   
   {% include 'includes/scripts.html' %}
   {% block extra_scripts %}
-  <script>  
-    $(document).ready(function () {  
-      $(".datepicker").datetimepicker({
-        format: "d-m-Y"
-      });
-      $.datetimepicker.setLocale('es');
-    });  
-  </script>
+  
   {% endblock extra_scripts %}
 
 
