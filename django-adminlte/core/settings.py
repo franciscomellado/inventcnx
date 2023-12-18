@@ -53,6 +53,11 @@ if RENDER_EXTERNAL_HOSTNAME:
 # Application definition
 
 INSTALLED_APPS = [
+    
+     "home",
+    "personas",
+    "inventario",
+    "licencias",
     'admin_adminlte.apps.AdminAdminlteConfig',
     "django.contrib.admin",
     "django.contrib.auth",
@@ -64,10 +69,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     
     #
-    "home",
-    "personas",
-    "inventario",
-    "licencias",
+   
 ]
 
 MIDDLEWARE = [
@@ -171,8 +173,8 @@ DATE_INPUT_FORMATS = (
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
