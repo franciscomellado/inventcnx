@@ -54,10 +54,6 @@ if RENDER_EXTERNAL_HOSTNAME:
 
 INSTALLED_APPS = [
     
-     "home",
-    "personas",
-    "inventario",
-    "licencias",
     'admin_adminlte.apps.AdminAdminlteConfig',
     "django.contrib.admin",
     "django.contrib.auth",
@@ -67,9 +63,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # aplicaciones terceros
     'widget_tweaks',
-    
+    "home",
+    "personas",
+    "inventario",
+    "licencias",
     #
-   
 ]
 
 MIDDLEWARE = [
