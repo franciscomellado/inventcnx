@@ -35,4 +35,4 @@ def index(request):
         'cantInventario': cantinventario,
 
     }
-    return render(request, 'pages/index.html', context)
+    return render(request, 'home/index.html', context)
