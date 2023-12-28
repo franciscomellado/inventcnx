@@ -14,8 +14,8 @@ class custom_form(ModelForm):
                         "data-target": "#id_" + field_name,
                     }
                 )
-        if field_name == "observacion":
-            field.widget.attrs["rows"] = 5
+            if field_name == "observacion":
+                field.widget.attrs["rows"] = 5
                 
 class Licenciaform(custom_form):
     class Meta:
@@ -23,7 +23,7 @@ class Licenciaform(custom_form):
         exclude = ["fecha_activacion","fecha_vencimiento","asignada"]
         
         widgets = {
-            "observaciones": Textarea(attrs={"cols": 80, "rows": 5}),
+            "observacion": Textarea(attrs={"cols": 80, "rows": 5}),
             "software": Select(attrs={
                 "class":"select2",
                 }),
@@ -36,7 +36,7 @@ class LicenciaUsuarioform(custom_form):
         exclude = ["fecha_registro","creado_por"]
         
         widgets = {
-            "observaciones": Textarea(attrs={"cols": 80, "rows": 5}),
+            "observacion": Textarea(attrs={"cols": 80, "rows": 5}),
             "persona": Select(attrs={"class":"select2", "style": "width: 100%"}),
             "licencia": Select(attrs={"class":"select2", "style": "width: 100%", "disabled": "true" }),
         

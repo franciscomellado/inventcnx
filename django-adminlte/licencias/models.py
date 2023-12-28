@@ -30,7 +30,7 @@ class Licencia(models.Model):
     tipo_licencia = models.ForeignKey(TipoLicencia, on_delete=models.CASCADE, verbose_name='Tipo de licencia')
     fecha_activacion = models.DateField(auto_now_add=True, verbose_name='Fecha de activación')
     fecha_vencimiento = models.DateField(default=date.today() + timedelta(days=365), editable=False,verbose_name='Fecha de vencimiento')  
-    observaciones = models.TextField(verbose_name='Observaciones', null=True,blank=True)
+    observacion = models.TextField(verbose_name='Observación', null=True,blank=True)
     estado = models.ForeignKey(EstadoLic, on_delete=models.PROTECT, verbose_name='Estado de la licencia')
     asignada = models.BooleanField(default=False )
    
@@ -44,7 +44,7 @@ class LicenciaUsuario(models.Model):
     persona = models.ForeignKey(Persona, on_delete=models.CASCADE,related_name='personas_asignadas')
     licencia = models.OneToOneField(Licencia, on_delete=models.CASCADE,  null=True, blank=True, related_name='licencia_asignada')
     fecha_asignada = models.DateField(verbose_name='Fecha de asignación')
-    observacion = models.TextField(max_length=100, verbose_name='Observaciones',null=True, blank=True)
+    observacion = models.TextField(max_length=100, verbose_name='Observación',null=True, blank=True)
     fecha_registro = models.DateTimeField(auto_now=True, verbose_name='Fecha de registro')
     creado_por=models.ForeignKey(User, on_delete=models.CASCADE)
     

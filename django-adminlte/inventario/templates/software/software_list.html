@@ -37,17 +37,18 @@
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Listado de Software</h3>
-                <div class="clearfix">
-                  {% include 'includes/messages.html' %}
-                  <span class= "float-right">
-                
-                <a  class="btn btn-app bg-primary btn-sm" title="add-inven" href="{% url 'inventario:crear_soft' %}">
+                {% block messages %}
+                      {% include 'includes/messages.html' %}
+                {% endblock %}
+                    {% block page_actions %}
+                    <span class= "float-right">
+                    <a  class="btn bg-primary btn-sm" title="add-inven" href="{% url 'inventario:crear_soft' %}">
                   <i class="fa fa-user-plus"></i>
                   Agregar
                 </a>
-                </span>
-              </div>
-              </div>
+              </span>
+                {% endblock %}
+            </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <table id="softwareTabla" class="table table-bordered table-striped">

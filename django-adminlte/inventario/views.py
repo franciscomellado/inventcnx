@@ -1,6 +1,4 @@
 from datetime import date, timedelta
-
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -32,8 +30,6 @@ def annotate_inventory_fields(queryset):
             fecha_factura_inventario = F('inventario__factura__fecha_registro'),
             proveedor_factura_inventario = F('inventario__factura__proveedor__nombre'),
             orden_de_compra_inventario = F('inventario__factura__orden_de_compra'),
-            
-            
             #otras
             tiempo_de_vida_inventario=ExpressionWrapper( date.today() -
                 F('inventario__factura__fecha_factura'),
@@ -184,17 +180,19 @@ class SoftwareCreateView(LoginRequiredMixin,SuccessMessageMixin,CreateView):
     success_message = "Ha sido creado con exito."
     
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        context = super(SoftwareCreateView, self).get_context_data(**kwargs)
         if self.request.POST:
-            formset = SoftwareInlineFormSetUpdate(self.request.POST)
+            context['inventario_formset']= SoftwareInlineFormSet(self.request.POST)
+            context['licencia_formset'] = LicenciaFormSet(self.request.POST)
         else:
-            formset = SoftwareInlineFormSet()
-        context['formset'] = formset
+            context['licencia_formset'] = LicenciaFormSet()
+            context['inventario_formset'] = SoftwareInlineFormSetUpdate()
         return context
 
     def form_valid(self, form):
         context = self.get_context_data()
         formset = context['formset']
+        licencia_formset = context['licencia_formset']
         if formset.is_valid():
             self.object = form.save()
             formset.instance = self.object
@@ -215,14 +213,14 @@ class SoftwareUpdateView(LoginRequiredMixin,SuccessMessageMixin,UpdateView):
         self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        formset = SoftwareInlineFormSetUpdate(instance = self.object)
+        formset = SoftwareInlineFormSet(instance = self.object)
         return self.render_to_response(self.get_context_data(form = form, formset = formset))
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form_class = self.get_form_class()
         form = self.get_form(form_class)
-        formset = SoftwareInlineFormSetUpdate(self.request.POST, instance=self.object)
+        formset = SoftwareInlineFormSet(self.request.POST, instance=self.object)
 
         if (form.is_valid() and formset.is_valid()):
             return self.form_valid(form, formset)
@@ -243,6 +241,8 @@ class SoftwareDeleteView(LoginRequiredMixin,SuccessMessageMixin,DeleteView):
     template_name = "software/software_confirm_delete.html"
     success_message = "Ha sido eliminado exitosamente."
     
+    
+
 ########################### ---- Vistas para Proveedor -----  
 class ProveedorListViews(LoginRequiredMixin,ListView):
     models = Proveedor
