@@ -30,32 +30,35 @@
         <img class="animation__shake" src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTELogo" height="60" width="60">
       </div>
     {% endblock preloader %}
+    {% if not view.is_popup %}
+        {% block header %}
+        
+              {% include 'includes/navigation-light.html' %}
+        
+        
+        {% endblock header %}
 
-    {% block header %}
-      {% include 'includes/navigation-light.html' %}
-    {% endblock header %}
+        {% block sidebar %}
+          {% include 'includes/sidebar.html' %}
+        {% endblock sidebar %}
 
-    {% block sidebar %}
-      {% include 'includes/sidebar.html' %}
-    {% endblock sidebar %}
-
-    
+    {% endif %}
     {% block content %}{% endblock content %}
+    {% if not view.is_popup %}
+      {% block footer %}
+        {% include 'includes/footer.html' %}
+      {% endblock footer %}
 
-    {% block footer %}
-      {% include 'includes/footer.html' %}
-    {% endblock footer %}
-
-    {% block control_sidebar %}
+      {% block control_sidebar %}
+        
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+          <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
       
-      <!-- Control Sidebar -->
-      <aside class="control-sidebar control-sidebar-dark">
-        <!-- Control sidebar content goes here -->
-      </aside>
-      <!-- /.control-sidebar -->
-    
-    {% endblock control_sidebar %}
-
+      {% endblock control_sidebar %}
+    {% endif %}
   </div>
   
   {% include 'includes/scripts.html' %}

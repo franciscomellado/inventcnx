@@ -66,6 +66,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # aplicaciones terceros
     'widget_tweaks',
+    'django_addanother',
+    
     
     #
 ]

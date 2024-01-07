@@ -20,10 +20,10 @@ class custom_form(ModelForm):
 class Licenciaform(custom_form):
     class Meta:
         model = Licencia
+        fields = ['nombre', 'numero_identificacion', 'tipo_licencia', 'observacion', 'estado']
         exclude = ["fecha_activacion","fecha_vencimiento","asignada"]
         
         widgets = {
-            "observacion": Textarea(attrs={"cols": 80, "rows": 5}),
             "software": Select(attrs={
                 "class":"select2",
                 }),

@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 {% load widget_tweaks %}
-{% block title %} Crear Elemento. {% endblock title %}
+{% block title %} Crear Software. {% endblock title %}
 
 {% block bodyclass %} hold-transition sidebar-mini {% endblock bodyclass %}
 {% block extrastyle %}
@@ -23,7 +23,7 @@
             <ol class="breadcrumb float-sm-right">
               {% comment %} <li class="breadcrumb-item"><a href="{% url 'personas:index' %}">Home</a></li> {% endcomment %}
               <li class="breadcrumb-item active">Ingresar Software</li>
-              <li class="breadcrumb-item"><a href="{% url 'inventario:index_soft' %}">Vover</a></li>
+              <li class="breadcrumb-item"><a href="{% url 'inventario:index_soft' %}">Volver</a></li>
             </ol>
           </div>
         </div>
@@ -43,64 +43,53 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form class="form-horizontal" action="" method="post" >
+              <form  action="" method="post"  enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-5">
+                  <div class="form-row">
                       {% for field in form.visible_fields %}
-                        <div class="form-group row">
+                      <div class="col-md-4 mb-3">
                           <label for="{{ field.id_for_label }}" class="col-sm-6 col-form-label">{{ field.label  }}</label>
-                          <div class="col-sm-6">
-                            {{ field|add_class:'form-control-sm'  }}
-                          </div>
+                          {{ field|add_class:'form-control-sm'  }}
                           {% for error in field.errors %}
                             <span class="help-block">{{ error }}</span>
                           {% endfor %}
-                        </div>
+                      </div>
                       {% endfor %}
-  
                     </div>
-                  
-                    <div class="col-md-1 ">
-                    </div>
-                  
-                    <div class="col-md-5">
-                      <div class="form-group">
+                    
                         {{ inventario_formset.management_form }}
                         {% for form in inventario_formset %}
+                        <div class="form-row">
                           {% for field in form %}
-  
-                          <div class="form-group row">
+                          <div class="col-md-4 mb-3">
+                            {% if  field.label != "Id" %}
                             <label for="{{ field.id_for_label }}" class="col-sm-6 col-form-label">{{ field.label  }}</label>
-                            <div class="col-sm-6">
-                              {{ field|add_class:'form-control-sm'  }}
-                            </div>
+                            {{ field|add_class:'form-control-sm'  }}
                             {% for error in field.errors %}
                               <span class="help-block">{{ error }}</span>
                             {% endfor %}
+                            {% endif %}
                           </div>
                           {% endfor %}
-                        {% endfor %}
-                        </div>
-                        
-                      <div class="col-md-1 ">
-                      </div>
-                   
                     
-                </div>
-                {{ licencia_formset.management_form }}
-                      {% for form in licencia_formset %}
-                          {{ form.as_p }}
-                      {% endfor %}
+                        {% endfor %}
+                     
+                        
                       </div>
-              </div>
+
+                      
+               
+               
+             
                 <!-- /.card-body -->
                 <div class="card-footer">
                   <button type="submit" class="btn btn-info">Aceptar</button>
                   <button onclick="javascript:history.back();" class="btn btn-default float-right">Cancelar</button>
                 </div>
                 <!-- /.card-footer -->
+              </div>
+                
               </form>
             </div>
             <!-- /.card -->

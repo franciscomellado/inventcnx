@@ -38,11 +38,11 @@ class TipoDispositivo(models.Model):
 class Factura(models.Model):
     factura = models.CharField(max_length=100)
     fecha_factura = models.DateField()
-    facturapdf = models.FileField(upload_to="facturas/", null=True, blank=True)
     fecha_registro = models.DateField(auto_now=True)
     proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT, null=True)
     orden_de_compra = models.CharField(max_length=50,null=True,blank=True)
-    observacion = models.TextField(null=True, blank=True, verbose_name="observaciones")
+    observacion = models.TextField(null=True, blank=True, verbose_name="observación")
+    facturapdf = models.FileField(upload_to="facturas/", null=True, blank=True)
     
     def __str__(self):
         return self.factura

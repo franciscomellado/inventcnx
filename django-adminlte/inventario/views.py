@@ -1,4 +1,5 @@
 from datetime import date, timedelta
+from django.db import transaction
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
@@ -8,6 +9,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django_addanother.views import UpdatePopupMixin
 
 from .forms import *
 from .models import Dispositivo, Factura, Inventario, Proveedor, Software
@@ -37,6 +39,7 @@ def annotate_inventory_fields(queryset):
             ),        
     )
     return queryset
+
 class InventarioListViews(SuccessMessageMixin,ListView):
     models: Inventario
     queryset = Inventario.objects.all()
@@ -183,21 +186,17 @@ class SoftwareCreateView(LoginRequiredMixin,SuccessMessageMixin,CreateView):
         context = super(SoftwareCreateView, self).get_context_data(**kwargs)
         if self.request.POST:
             context['inventario_formset']= SoftwareInlineFormSet(self.request.POST)
-            context['licencia_formset'] = LicenciaFormSet(self.request.POST)
         else:
-            context['licencia_formset'] = LicenciaFormSet()
             context['inventario_formset'] = SoftwareInlineFormSetUpdate()
         return context
 
     def form_valid(self, form):
         context = self.get_context_data()
-        formset = context['formset']
-        licencia_formset = context['licencia_formset']
-        if formset.is_valid():
+        inventario_formset = context['inventario_formset']
+        if inventario_formset.is_valid():
             self.object = form.save()
-            formset.instance = self.object
-            formset.save()
-            self.object.tipo='S'
+            inventario_formset.instance = self.object
+            inventario_formset.save()
             return super().form_valid(form)
         else:
             return self.render_to_response(self.get_context_data(form=form))
@@ -241,21 +240,23 @@ class SoftwareDeleteView(LoginRequiredMixin,SuccessMessageMixin,DeleteView):
     template_name = "software/software_confirm_delete.html"
     success_message = "Ha sido eliminado exitosamente."
     
-    
+
 
 ########################### ---- Vistas para Proveedor -----  
 class ProveedorListViews(LoginRequiredMixin,ListView):
     models = Proveedor
     queryset = Proveedor.objects.all()
     template_name = 'proveedor/proveedor_list.html'
-class ProveedorCreateView(LoginRequiredMixin,SuccessMessageMixin,CreateView):
+    
+from django_addanother.views import CreatePopupMixin,UpdatePopupMixin
+class ProveedorCreateView(LoginRequiredMixin,SuccessMessageMixin,CreatePopupMixin,CreateView):
     model= Proveedor
     form_class = Proveedor_form
     template_name = "proveedor/proveedor_form.html"
     success_url = reverse_lazy("inventario:index_prove")
     success_message = "%(nombre)s ha sido creado con exito."
     
-class ProveedorUpdateView(LoginRequiredMixin,SuccessMessageMixin,UpdateView):
+class ProveedorUpdateView(LoginRequiredMixin,SuccessMessageMixin,UpdatePopupMixin,UpdateView):
     model = Proveedor
     form_class = Proveedor_form
     success_url = reverse_lazy("inventario:index_prove")
@@ -286,14 +287,14 @@ class FacturaListViews(LoginRequiredMixin,SuccessMessageMixin,ListView):
     queryset = Factura.objects.all()
     template_name = 'factura/factura_list.html'
     
-class FacturaCreateView(LoginRequiredMixin,SuccessMessageMixin,CreateView):
+class FacturaCreateView(LoginRequiredMixin,SuccessMessageMixin,CreatePopupMixin,CreateView):
     model = Factura
     form_class = Factura_form
     template_name = "factura/factura_form.html"
     success_url = reverse_lazy("inventario:index_factu")
     success_message = "%(factura)s ha sido creado con exito."
     
-class FacturaUpdateView(LoginRequiredMixin,SuccessMessageMixin,UpdateView):
+class FacturaUpdateView(LoginRequiredMixin,SuccessMessageMixin,UpdatePopupMixin ,UpdateView):
     model = Factura
     form_class = Factura_form
     success_url = reverse_lazy("inventario:index_factu")
